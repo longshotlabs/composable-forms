@@ -1,0 +1,22 @@
+site_name: Composable Form Specification
+copyright: 2017 Dairy State Designs
+pages:
+  - Home: index.md
+  - User Documentation:
+    - Overview: user.md
+    - 'Form Component Reference': user/form.md
+    - 'Input Component Reference': user/input.md
+    - 'Field Component Reference': user/field.md
+    - 'FormList Component Reference': user/list.md
+    - 'ErrorsBlock Component Reference': user/errors.md
+    - 'Validator Reference': user/validation.md
+  - Full Specification:
+    - Overview: spec.md
+    - 'Form Component Specification': spec/form.md
+    - 'Input Component Specification': spec/input.md
+    - 'Field Component Specification': spec/field.md
+    - 'FormList Component Specification': spec/list.md
+    - 'ErrorsBlock Component Specification': spec/errors.md
+    - 'Validator Specification': spec/validation.md
+  - ReactoForm: reacto-form.md
+  - Packages: packages.md
