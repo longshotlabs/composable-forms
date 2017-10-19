@@ -16,14 +16,14 @@ import myValidationFunction from './myValidationFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form ref={i => { this.form = i; }} onSubmit={this.onSubmit} validator={myValidationFunction}>
-        <Input name="firstName" type="text">
-        <Input name="lastName" type="text">
+        <Input name="firstName" type="text" />
+        <Input name="lastName" type="text" />
         <button type="button" onClick={() => { this.form.submit(); }}>Submit</button>
       </Form>
     );

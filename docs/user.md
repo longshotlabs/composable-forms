@@ -1,4 +1,4 @@
-# User Documentation
+# An Overview For Users
 
 This documentation is for developers who just want to learn enough about this specification to be able to use all form packages that implement it.
 
@@ -19,7 +19,7 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
@@ -40,7 +40,7 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
@@ -69,14 +69,14 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
-        <Input name="firstName" type="text">
-        <Input name="lastName" type="text">
+        <Input name="firstName" type="text" />
+        <Input name="lastName" type="text" />
       </Form>
     );
   }
@@ -100,14 +100,14 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form ref={i => { this.form = i; }} onSubmit={this.onSubmit}>
-        <Input name="firstName" type="text">
-        <Input name="lastName" type="text">
+        <Input name="firstName" type="text" />
+        <Input name="lastName" type="text" />
         <button type="button" onClick={() => { this.form.submit(); }}>Submit</button>
       </Form>
     );
@@ -133,8 +133,8 @@ But you are not limited to simple key names for the `name` properties; you can u
 For example:
 
 ```js
-<Input name="addresses[0].city" type="text" value="Anchorage">
-<Input name="addresses[0].postalCode" type="text" value="99501">
+<Input name="addresses[0].city" type="text" value="Anchorage" />
+<Input name="addresses[0].postalCode" type="text" value="99501" />
 ```
 
 Would result in a submission of:
@@ -163,17 +163,17 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
         <Field label="First Name">
-          <Input name="firstName" type="text">
+          <Input name="firstName" type="text" />
         </Field>
         <Field label="Last Name">
-          <Input name="lastName" type="text">
+          <Input name="lastName" type="text" />
         </Field>
       </Form>
     );
@@ -200,25 +200,25 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
         <Field label="First Name">
-          <Input name="firstName" type="text">
+          <Input name="firstName" type="text" />
         </Field>
         <Field label="Last Name">
-          <Input name="lastName" type="text">
+          <Input name="lastName" type="text" />
         </Field>
         <h2>Mailing Address</h2>
         <Form name="addresses[0]">
           <Field label="City">
-            <Input name="city" type="text">
+            <Input name="city" type="text" />
           </Field>
           <Field label="Postal Code">
-            <Input name="postalCode" type="text">
+            <Input name="postalCode" type="text" />
           </Field>
         </Form>
       </Form>
@@ -239,17 +239,17 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
         <Field label="First Name">
-          <Input name="firstName" type="text">
+          <Input name="firstName" type="text" />
         </Field>
         <Field label="Last Name">
-          <Input name="lastName" type="text">
+          <Input name="lastName" type="text" />
         </Field>
         <h2>Mailing Address</h2>
         <AddressForm name="addresses.mailing" />
@@ -289,17 +289,17 @@ import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
   onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data)
+    if (isValid) mySubmissionFunction(data);
   };
 
   render() {
     return (
       <Form onSubmit={this.onSubmit}>
         <Field label="First Name">
-          <Input name="firstName" type="text">
+          <Input name="firstName" type="text" />
         </Field>
         <Field label="Last Name">
-          <Input name="lastName" type="text">
+          <Input name="lastName" type="text" />
         </Field>
         <h2>Addresses</h2>
         <FormList name="addresses">
