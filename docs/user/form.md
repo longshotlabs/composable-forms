@@ -9,11 +9,12 @@ To use a Form type component, render it with nested children based on what you w
 React JSX example:
 
 ```js
+import React, { Component } from 'react';
 import { Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 import myValidationFunction from './myValidationFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };

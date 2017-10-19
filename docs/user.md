@@ -13,10 +13,11 @@ Not surprisingly, the core of the Composable Form Specification is the "Form" co
 When using [reacto-form](https://github.com/DairyStateDesigns/reacto-form), code that uses a simple empty Form component looks something like this:
 
 ```js
+import React, { Component } from 'react';
 import { Form } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -33,10 +34,11 @@ class MyExampleForm extends Component {
 Now let's pretend I decide I like the features of another "Form" component from a different package better. I update the code:
 
 ```js
+import React, { Component } from 'react';
 import { Form } from 'other-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -61,10 +63,11 @@ For additional user documentation, refer to the [Form Type Reference](user/form.
 Anyway, let's add some inputs to our form.
 
 ```js
+import React, { Component } from 'react';
 import { Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -91,10 +94,11 @@ For additional user documentation, refer to the [Input Type Reference](user/inpu
 We will now add a Submit button:
 
 ```js
+import React, { Component } from 'react';
 import { Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -153,10 +157,11 @@ NOTE: Numeric keys are not supported.
 In most cases, you'll want some additional stuff around your input: a label, error messages, descriptive text, a requiredness indicator, an icon, borders, padding. A Field-type component provides these things.
 
 ```js
+import React, { Component } from 'react';
 import { Field, Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -189,10 +194,11 @@ A nested form must have a `name` property with an object path notation string li
 A nesting example:
 
 ```js
+import React, { Component } from 'react';
 import { Field, Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -226,11 +232,12 @@ Note that object path notation begins from the closest form, so the "city" input
 Packages can choose to export entire premade forms as long as they conform the the specification for Form-type components. So for example, you might be able to plug in an open source address form component like this:
 
 ```js
+import React, { Component } from 'react';
 import { Field, Form, Input } from 'reacto-form';
 import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
@@ -275,11 +282,12 @@ When using an ErrorsBlock as a child of FormList, omit the `names` property. Whe
 Here is a twist on an earlier example, if we wanted to let a user enter any number of addresses:
 
 ```js
+import React, { Component } from 'react';
 import { Field, Form, FormList, Input } from 'reacto-form';
 import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
-class MyExampleForm extends Component {
+class SomePage extends Component {
   onSubmit = (data, isValid) => {
     if (isValid) mySubmissionFunction(data)
   };
