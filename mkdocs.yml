@@ -1,8 +1,16 @@
 site_name: Composable Form Specification
-copyright: 2017 Dairy State Designs
+copyright: © 2017 Dairy State Designs
+theme_dir: cinder
+repo_url: https://github.com/DairyStateDesigns/composable-forms
+google_analytics: ['UA-35264404-5', 'forms.dairystatedesigns.com']
+markdown_extensions:
+  - toc:
+      permalink: True
+extra_css:
+  - styles.css
 pages:
   - Home: index.md
-  - User Documentation:
+  - User Docs:
     - Overview: user.md
     - 'Form Component Reference': user/form.md
     - 'Input Component Reference': user/input.md
@@ -10,7 +18,7 @@ pages:
     - 'FormList Component Reference': user/list.md
     - 'ErrorsBlock Component Reference': user/errors.md
     - 'Validator Reference': user/validation.md
-  - Full Specification:
+  - Spec:
     - Overview: spec.md
     - 'Form Component Specification': spec/form.md
     - 'Input Component Specification': spec/input.md

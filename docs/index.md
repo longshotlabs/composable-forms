@@ -36,15 +36,19 @@ Also, you'll have to write some custom logic for validating and displaying those
 
 Wouldn't it be nice if all the form components could work together seamlessly? What if you could even import the entire address entry form from a package and drop it into your main form without any extra work? And wouldn't it be great if validating and displaying validity was automatic?
 
-This is why we've created our Composable Form Specification.
+This is why we've created the Composable Form Specification.
 
 ## Author
 
-This specification is maintained by [Dairy State Designs](http://dairystatedesigns.com/) and open to modification requests from the community. The spec author is Eric Dobbertin, who created [AutoForm](https://github.com/aldeed/meteor-autoform), a widely used form package for [Meteor](https://www.meteor.com/)/[Blaze](http://blazejs.org/).
+This specification is maintained by [Dairy State Designs](http://dairystatedesigns.com/) and open to modification requests from the community. The spec author is [Eric Dobbertin](https://github.com/aldeed), who created [AutoForm](https://github.com/aldeed/meteor-autoform), a widely used form package for [Meteor](https://www.meteor.com/)/[Blaze](http://blazejs.org/).
+
+## License
+
+MIT
 
 ## A Reference Implementation for React
 
-While this specification is intended to be generic, we are initially concentrating on React. Please try out our NPM package, [reacto-form](https://github.com/DairyStateDesigns/reacto-form), and let us know what you think.
+While this specification is intended to be generic, we are initially concentrating on React. Please try out our NPM package, [reacto-form](reacto-form.md), and let us know what you think.
 
 ## Documentation
 

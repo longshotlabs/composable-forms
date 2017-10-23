@@ -1,0 +1,23 @@
+a.headerlink {
+  font-size: 40%;
+  vertical-align: super;
+  margin-left: 5px;
+}
+
+@media (max-width: 1200px) and (min-width: 768px) {
+  body {
+    padding-top: 115px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .bs-sidebar.affix {
+      top: 125px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bs-sidebar.affix {
+      top: 80px;
+  }
+}

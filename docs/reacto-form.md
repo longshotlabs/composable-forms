@@ -1,6 +1,6 @@
 # ReactoForm
 
-ReactoForm is our React implementation of the Composable Form Specification. It provides Form, FormList, Field, and ErrorsBlock components, as well as several basic Input components. The Form component should meet the needs of most developers. The other components are somewhat opinionated examples that many developers will be fine with and can style as necessary. Those that need something different can publish their own components in a separate package following the spec.
+ReactoForm is our React implementation of the [Composable Form Specification](user.md). It provides Form, FormList, Field, and ErrorsBlock components, as well as several basic Input components. The Form component should meet the needs of most developers. The other components are somewhat opinionated examples that many developers will be fine with and can style as necessary. Those that need something different can publish their own components in a separate package following the spec.
 
 ## Installation
 
@@ -92,6 +92,7 @@ export default class PlacesCreateForm extends Component {
 Implements the [Form spec](spec/form.md).
 
 In addition to following the spec, these props are supported:
+
 - Use `style` or `className` props to help style the HTML form container, which is a DIV rather than a FORM.
 - Set `logErrorsOnSubmit` to `true` to log validation errors to the console when submitting. This can help you figure out why your form isn't submitting if, for example, you forgot to include an ErrorsBlock somewhere so there is an error not shown to the user.
 
@@ -133,6 +134,7 @@ Renders something like
 ```
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the div
 - labelClassName: String of space-delimited classes to use on the label
 - labelFor: The "for" attribute to use on the label
@@ -158,6 +160,7 @@ Renders something like
 ```
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the outer div
 - errorClassName: String of space-delimited classes to use on each error message div
 - errorStyle: Style object for each error message div
@@ -178,6 +181,7 @@ Renders something like
 This renders a check box with a label, so if using it within a Field, you would not usually pass a `label` to Field.
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the div
 - style: Style object for the div
 
@@ -222,6 +226,7 @@ Use `maxLength` prop to set a maximum number of characters the user can enter.
 Use `placeholder` prop to set placeholder text.
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the input or textarea
 - style: Style object for the input or text area
 
@@ -232,6 +237,7 @@ Implements the [Input spec](spec/form.md) with user-defined options that may hav
 See the "Selection Inputs" section of [the Input Component Reference](user/input.md) for details about passing options.
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the select
 - style: Style object for the select
 
@@ -242,6 +248,7 @@ Implements the [Input spec](spec/form.md) with user-defined options that may hav
 See the "Selection Inputs" section of [the Input Component Reference](user/input.md) for details about passing options.
 
 You can use the following props to customize:
+
 - className: String of space-delimited classes to use on the container div
 - itemClassName: String of space-delimited classes to use on each item div
 - itemStyle: Style object for each item div
