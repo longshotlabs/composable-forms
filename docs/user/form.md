@@ -47,7 +47,6 @@ ALL properties are optional, but the `name` property is required on forms that a
 PropTypes.arrayOf(PropTypes.shape({
   message: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
 }))
 ```
 
@@ -139,6 +138,14 @@ Returns a boolean indicating whether anything has been entered/changed by the us
 ### getValue()
 
 Returns the current value of the form in state
+
+### validate()
+
+Calls the `validator` function and then updates the errors tracked in state. Return a Promise that resolves with the errors array.
+
+### submit()
+
+Calls `this.validate()` and then the `onSubmit` function.
 
 ### resetValue()
 

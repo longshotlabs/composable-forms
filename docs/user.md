@@ -315,4 +315,13 @@ For additional user documentation, refer to the [FormList Type Reference](user/l
 
 ## Validation and Displaying Errors
 
-TODO
+The `Form` component handles validation automatically in the following ways:
+
+- When the form data needs to be validated, it is passed to the function provided in the form's `validator` property. That function will return an array of error objects or a Promise that eventually resolves with an array of error objects.
+- The error objects that are relevant to a certain component within the form are passed to it automatically, in the `errors` property. Relevancy is determined based on the `name` or `names` property of the component matching the `name` property of the error object.
+
+Fields, Inputs, FormLists, and child Forms can all use the `errors` passed in if necessary, for example to show indicators or change colors. But the most common case of using `errors` is with the `ErrorsBlock` component.
+
+An ErrorsBlock simply reads the `message` property of each error object passed in and displays all the messages to the user. The messages are assumed to be translated into the user's language by the validator function.
+
+For additional user documentation, refer to the [ErrorsBlock Reference](user/errors.md) and [Validator Reference](user/validation.md).

@@ -14,7 +14,6 @@ To comply with this spec, an ErrorsBlock type component only needs to display at
 PropTypes.arrayOf(PropTypes.shape({
   message: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
 }))
 ```
 
@@ -25,3 +24,7 @@ The array of error objects. Display the `message` string from each. You should a
 ### isComposableFormErrors
 
 Set this to `true` so that the containing form and other components know that your component implements the ErrorsBlock specification.
+
+## Example
+
+[ReactoForm ErrorsBlock](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/ErrorsBlock.jsx)

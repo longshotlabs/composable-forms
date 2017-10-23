@@ -42,7 +42,6 @@ A label string to render. Translate this before passing it in.
 PropTypes.arrayOf(PropTypes.shape({
   message: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
 }))
 ```
 
@@ -62,5 +61,6 @@ These properties are not strictly governed by this specification, but in order t
 
 - `className` (string): For inputs that render HTML, to be used as the `class` attribute on the outermost element.
 - `labelClassName` (string): For inputs that render HTML, to be used as the `class` attribute on the label element.
+- `labelStyle` (object): For inputs that render HTML, to be used as the `style` attribute on the label element.
 - `labelFor` (string): For inputs that render HTML, to be used as the `for` attribute on the label element.
 - `style` (object): For inputs that render HTML, to be used as the `style` attribute on the outermost element.

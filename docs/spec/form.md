@@ -2,14 +2,15 @@
 
 A group of one or more fields, inputs, lists, or other forms. A form results in a JavaScript object.
 
-## Basics
+## Implementation
 
-- Expects one or more children
-- Renders but ignores children that are not fields, inputs, lists, or forms
-- Keeps the current form object in internal component state, updating it as `onChanging` or `onChanged` props of its direct children are called. (Each form implementation can choose whether to use `onChanging` or `onChanged`, or can make it configurable.) The object keys are taken from the `name` property of each direct child that is a field, input, list, or form.
-- Bubbles up child function calls but also leaves in place any function provided by the user (so both would receive `onChanged` for example)
-- Automatically passes `value` to each direct child that is a field, input, list, or form based on its own value, only if child value prop isn’t already set.
-- Enforces that every direct child that is a field, input, list, or form must have a `name` property that is set to a non-empty string.
+A `Form` type component is the most complicated component to create. It must do the following:
+
+- Expect one or more children and render them in order. Children that are part of this spec must be treated specially. They must be cloned with additional properties passed to them.
+- Track the current form object in internal component state, updating it as `onChanging` or `onChanged` props of its children are called. (Each form implementation can choose whether to use `onChanging` or `onChanged` to update its state, or can make it configurable.) The object keys are derived from the `name` property of each descendant that is a field, input, list, or form.
+- By listening for `onChanged` and `onChanging` and `onSubmit` calls from descendants, bubble up these calls but also leave in place any listener functions provided by the user (so both would receive `onChanged` for example).
+- Automatically set the `value` property for input, list, or form descendants based on the form object value tracked in state, only if child value prop isn’t already set by the user.
+- Enforce that every input, list, or form must have a `name` property that is set to a non-empty string.
 
 ## Rendering Descendants
 
@@ -24,11 +25,14 @@ A form component, when rendering its descendants recursively, must check whether
 
 - Check `name` string prop
 - If no name, ignore
-- Pass functions for `onChanged`, `onChanging`, and `onSubmit` props.
+- Pass functions for `onChanged` and `onChanging` props:
   - Retain any functions already supplied for those props and call them first.
   - Update the form's value object using lodash.set, the value (first argument), and the `name` prop. `set(obj, name, value);`
-  - Examine `validateOn` and `validateOnWhenInvalid` to determine whether the object should be revalidated. If so, validate and update errors state.
-  - Call the form's `onChanged`, `onChanging`, and/or `onSubmit` props as required
+  - Examine `validateOn` and `validateOnWhenInvalid` to determine whether the object should be revalidated. If so, call `this.validate()`.
+  - Call the form's `onChanged` or `onChanging` as required, passing both the new form object and the validaty boolean as arguments.
+- Pass functions for `onSubmit` prop
+  - First call the user-supplied `onSubmit` for the component, if there is one
+  - Then call `this.submit()` for the form
 - If `value` prop is `undefined`, pass in the current value `get(formValueObject, name)`
 - If `errors` prop is `undefined`, pass the form's `errors` array, filtered to only those where the error `name` either exactly matches the component `name` or starts with the component `name` plus a dot or open bracket. If `name` is falsy, do not pass any errors.
 - If `isReadOnly` prop is a function, call it passing the current form value and pass the return value to the component instead
@@ -55,21 +59,12 @@ ALL properties are optional, but the `name` property is required on forms that a
 PropTypes.arrayOf(PropTypes.shape({
   message: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
 }))
 ```
 
 Array of error objects for all inputs on this form, as returned from the `validator` function.
 
 A top-level form would track the errors array in state while nested forms would receive them as props (since validation is done by the highest level form). A form component must handle the case where errors come from props and state by merging the two arrays into one before passing down to descendants.
-
-### name
-
-```js
-PropTypes.string
-```
-
-This will be set to the desired object path where the value should be stored, using dot notation. This is the purview of the parent form, so nothing need be done with this property directly.
 
 ### onChanging
 
@@ -78,8 +73,6 @@ PropTypes.func
 ```
 
 As any input anywhere within the form or any of its subforms is changing, the form must call `onChanging(newValue, isValid)`, where `newValue` is the new value of the form object after the most recent user entry.
-
-Essentially, this means bubbling up the `onChanging` calls of all direct children that are fields, inputs, lists, or forms.
 
 `onChanging` must never be called with the exact same value as the last time it was called.
 
@@ -91,28 +84,9 @@ PropTypes.func
 
 After any input anywhere within the form or any of its subforms has finished changing, the form must call `onChanged(newValue, isValid)`, where `newValue` is the new value of the form object after the most recent user entry.
 
-Essentially, this means bubbling up the `onChanged` calls of all direct children that are fields, inputs, lists, or forms.
-
 `onChanged` must never be called with the exact same value as the last time it was called.
 
 `onChanged` may never be called with a `newValue` that hasn't been first passed to `onChanging`. (In other words, consumers can safely use ONLY `onChanging` without fear of missing any change.)
-
-If an input has no logical difference between "changing" and "changed", it should call both at the same time, `onChanging` first.
-
-### onSubmit
-
-```js
-PropTypes.func
-```
-
-A form must call `onSubmit(value, isValid)` with the most recent object representing all the form values. It must do this when:
-- `onSubmit` is called by any direct child that is a field, input, list, or form.
-- Some component of the form, such as a built-in Submit button, requests submission
-- For any other reason the form wants to submit (for example, submit automatically after a delay or once the current value matches some expected value)
-
-A value may not be passed to `onSubmit` unless it has first been passed to both `onChanging` and `onChanged`.
-
-`onSubmit` must return a Promise that resolves if submission was successful and the Form component should reset all input values to match the values in the object in the Form's `value` property. If unsuccessful, the Promise should reject.
 
 ### value
 
@@ -164,6 +138,29 @@ Returns a boolean indicating whether anything has been entered/changed by the us
 
 Returns the current value of the form in state
 
+### validate()
+
+This function must call the `validator` function and then update the errors tracked in state. It must also return a Promise that resolves with the errors array.
+
+See the ReactoForm Form component's validate function for an example.
+
+### submit()
+
+This function must call the `validator` function and then call the `onSubmit` function.
+
+The object to pass to both functions is the most recent object representing all the form values, which you should be tracking in state. A form object may not be passed to `onSubmit` unless it has first been passed to both `onChanging` and `onChanged`.
+
+Expect `validator` to return an array of error objects a Promise that resolves with an array of error objects, and expect `onSubmit` to return either `undefined` or a Promise that resolves if submission was successful. Upon success, the Form component must call `resetValue` instance function. If `onSubmit` throws or the returned Promise rejects, do not reset values.
+
+See the ReactoForm Form component's submit function for an example.
+
 ### resetValue()
 
-Forces a reset of the value state to match the value prop, which also clears all validation errors.
+This function must do the following:
+- Reset the value state to match the value prop
+- Clear all validation errors in state
+- Call `element.resetValue()` on all descendant Inputs, Forms, and FormLists, down to exactly one level of nesting.
+
+## Example
+
+[ReactoForm Form](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Form.jsx)

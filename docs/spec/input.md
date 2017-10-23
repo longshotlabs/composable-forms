@@ -2,98 +2,22 @@
 
 A component that actually displays and collects data. An input results in any JavaScript data type.
 
-## Basics
+## Implementation
 
-- Must either display existing data, collect new or changed data, or both
-- Uses value prop as initial value and forcefully updates the input's value whenever the value prop changes, but otherwise retains typed/selected data on rerun
-- The data type of the `value` property and the data type of the argument passed to the `onChanging`, `onChanged`, and `onSubmit` functions must be the same, but can be any data type.
-- If its initial value (based on the `value` prop or internal logic or some combination) is not `undefined`, it must call `onChanging` and `onChanged` with that value exactly once just before the component mounts.
-- Whenever its internal value changes due to the `value` prop changing, it must call `onChanging` and `onChanged` with that value.
-- Visually, an input SHOULD NOT have any margin (no whitespace above, below, or to either side of it). Exceptions can be made, but know that fields and forms in general will expect this.
+Because the closest `Form` type component does much of the heavy work, creating your own `Input` type component is not difficult.
 
-## Properties
+- When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChanged` with that value. Your component may have a default value that is used when the `value` prop is undefined.
+- Render the value from state for the user to see and edit. If the `isReadOnly` prop is `true`, do not allow editing it. If you want your component to always be read only, you do not have to provide any way to edit. (Make sure to document this.)
+- Document the expected data type of your `value`, and throw errors whenever the data type is incorrect.
+- If the user edits the value and you believe that their editing is in progress, update your internal value state and then call `onChanging`, passing it the new value.
+- If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` AND `onChanged`, in that order, passing them the new value.
+- If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` AND `onChanged`, in that order, passing them the new value.
+- Visually, do not include any margin (no whitespace above, below, or to either side of your component). Exceptions can be made, but know that fields and forms in general will expect no margin.
+- Optionally call `onSubmit` property if the user does something that makes you think they want to submit the form.
+- Optionally show an indication or alter styles when the `isRequired` property is `true`
+- Optionally show an indication or alter styles when the `errors` property has errors
 
-All properties are optional. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.
-
-### name
-
-```js
-PropTypes.string
-```
-
-This will be set to the desired object path where the value should be stored, using dot notation. This is the purview of the parent form, so nothing need be done with this property directly.
-
-If you are wrapping an HTML input, you may or may not want to pass this through to the HTML `name` attribute. We leave that choice to you.
-
-### value
-
-If the input's corresponding data has a current value or a default value, it will be provided in this property by either the coder or the parent form.
-
-While we recommend that any change to this value should reset the internally stored, work-in-progress value, it is not required. If you update the value in state, you must call `onChanging` and `onChanged` with the new value.
-
-### onChanging
-
-```js
-PropTypes.func
-```
-
-As the input value changes, the input component must call `onChanging(newValue)`, where `newValue` is the new value after the most recent user entry. For example, this may be called as a user types or as they move a pointing device or range slider.
-
-`onChanging` must never be called with the exact same value as the last time it was called.
-
-Calls to `onChanging` may be throttled as necessary by the input. Users can of course add additional throttling, but they can't reduce built-in throttling, so therefore it's best if input components throttle only the minimum amount necessary to achieve good default performance.
-
-### onChanged
-
-```js
-PropTypes.func
-```
-
-After the input value changes, the input component must call `onChanged(newValue)`, where `newValue` is the new value after the most recent user entry. For example, a text entry input may call `onChanging` repeatedly while a user types, and then call `onChanged` after they stop typing for a bit, or after they click, tap, or tab off the field.
-
-`onChanged` must never be called with the exact same value as the last time it was called.
-
-`onChanged` may never be called with a `newValue` that hasn't been first passed to `onChanging`. (In other words, consumers can safely use ONLY `onChanging`.)
-
-If an input has no logical difference between "changing" and "changed", it should call both at the same time, `onChanging` first.
-
-### onSubmit
-
-```js
-PropTypes.func
-```
-
-An input may choose to call `onSubmit()`, passing no arguments. For example, a text field may do this when you press Enter.
-
-### isRequired
-
-```js
-PropTypes.bool
-```
-
-If an input has the ability to show an indication that it is required, it must determine requiredness from the `isRequired` property. Note that this is unrelated to actual validation; it is for display purposes only.
-
-### isReadOnly
-
-```js
-PropTypes.bool
-```
-
-If possible, an input should support being read-only. If `isReadOnly` is `true`, it should visually appear disabled and should not allow the user to edit the value.
-
-### errors
-
-```js
-PropTypes.arrayOf(PropTypes.shape({
-  message: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string,
-}))
-```
-
-Array of error objects for this input. The containing form will supply this. Inputs do not have to use this, but they can if they want to display visual indication of validity (for example, turning the background or border of a text field red).
-
-### Additional Properties
+## Additional Properties
 
 These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions:
 
@@ -112,7 +36,7 @@ Set this to `true` so that the containing form and other components know that yo
 
 ### isDirty()
 
-Returns a boolean indicating whether anything has been entered/changed by the user.
+Returns a boolean indicating whether anything has been entered/changed by the user. Return `true` if the value state does not match the value prop.
 
 ### getValue()
 
@@ -120,7 +44,7 @@ Returns the current value of the input in state
 
 ### resetValue()
 
-Forces a reset of the value state to match the value prop
+Update the value state to match the value prop, erasing any user changes
 
 ## Additional Specs
 
@@ -186,3 +110,7 @@ Selection input UI can be anything, for example, toggle buttons, check boxes, a 
 In addition to `label` and `value`, which are required, `id` can be added if any values are duplicated. `id` should be used for array tracking (e.g., `key` prop in React) if supplied, otherwise use `value`.
 
 Dropdown-type selection inputs must add a first option that is shown when the value is empty (undefined, null, empty string, etc.). Allow the user to set the label for this option using a string property called `emptyLabel`.
+
+## Example
+
+[ReactoForm Input](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Input.jsx)

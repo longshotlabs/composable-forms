@@ -28,7 +28,6 @@ Specify one or more names (paths). Only validation errors that exactly match the
 PropTypes.arrayOf(PropTypes.shape({
   message: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string,
 }))
 ```
 
