@@ -109,6 +109,10 @@ Returns the current value of the input in state
 
 Forces a reset of the value state to match the value prop
 
+### setValue(value)
+
+Update the value state to be the provided value. This is similar to passing a new value to the `value` prop except that `isDirty()` will return true after setting it this way if the set value doesn't match the prop value, so this is the best way to simulate the user having entered/chosen a value.
+
 ## More Details By Type
 
 ### Date Inputs

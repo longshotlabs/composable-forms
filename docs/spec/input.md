@@ -46,6 +46,10 @@ Returns the current value of the input in state
 
 Update the value state to match the value prop, erasing any user changes
 
+### setValue(value)
+
+Update the value state to be the provided value. This is similar to passing a new value to the `value` prop except that `isDirty()` will return true after setting it this way if the set value doesn't match the prop value, so this is the best way to simulate the user having entered/chosen a value.
+
 ## Additional Specs
 
 Depending on what an input value's data type is and other factors, there are additional rules and recommendations to follow. These help ensure that it it easy to swap one input for another that is similar.
