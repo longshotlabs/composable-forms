@@ -325,3 +325,40 @@ Fields, Inputs, FormLists, and child Forms can all use the `errors` passed in if
 An ErrorsBlock simply reads the `message` property of each error object passed in and displays all the messages to the user. The messages are assumed to be translated into the user's language by the validator function.
 
 For additional user documentation, refer to the [ErrorsBlock Reference](user/errors.md) and [Validator Reference](user/validation.md).
+
+## Tips
+
+### Customizing Components
+
+You'll often want to apply certain styles, classes, or other props to all instances of certain form components using anywhere in your app. A good pattern for this is to import from the form packages in a single file, change the `defaultProps` on the components, and then export them. Everywhere you need them throughout your app, you can then import from this file rather than directly from the form packages.
+
+Here's an example of using this pattern to apply Bootstrap classes to ReactoForm components:
+
+```js
+import { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Form, FormList, Input, SelectCheckboxInput } from 'reacto-form';
+import moment from 'moment-timezone';
+
+BooleanCheckboxInput.defaultProps.className = 'checkbox';
+DateTimeInput.defaultProps = {
+  ...DateTimeInput.defaultProps,
+  dayInputClassName: 'form-control',
+  meridiemSelectClassName: 'form-control',
+  moment,
+  monthSelectClassName: 'form-control',
+  timeInputClassName: 'form-control',
+  yearInputClassName: 'form-control',
+};
+ErrorsBlock.defaultProps.className = 'help-block';
+Field.defaultProps.className = 'form-group';
+Field.defaultProps.labelClassName = 'control-label';
+FormList.defaultProps.buttonClassName = 'btn btn-primary';
+Input.defaultProps.className = 'form-control';
+SelectCheckboxInput.defaultProps = {
+  ...SelectCheckboxInput.defaultProps,
+  checkboxClassName: 'form-check-input',
+  labelClassName: 'form-check-label',
+  itemClassName: 'form-check',
+};
+
+export { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Form, FormList, Input, SelectCheckboxInput };
+```

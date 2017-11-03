@@ -8,6 +8,16 @@ A FormList is probably the most complicated component type to create. The only r
 
 It's best to start with the FormList component from ReactoForm and make modifications until it meets your needs.
 
+## Static Properties
+
+### defaultProps
+
+You must include the `defaultProps` static property, even if it is only an empty object.
+
+### isComposableFormList
+
+Set this to `true` so that the containing form and other components know that your component implements the FormList specification.
+
 ## Example
 
 [ReactoForm FormList](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/FormList.jsx)

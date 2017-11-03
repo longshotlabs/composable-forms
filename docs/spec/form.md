@@ -124,6 +124,10 @@ The form must call `validator(value)` whenever it needs to validate. It needs to
 
 ## Static Properties
 
+### defaultProps
+
+You must include the `defaultProps` static property, even if it is only an empty object.
+
 ### isComposableForm
 
 Set this to `true` so that other components know that your component implements the Form specification.

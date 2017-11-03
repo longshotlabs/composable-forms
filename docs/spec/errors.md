@@ -21,6 +21,10 @@ The array of error objects. Display the `message` string from each. You should a
 
 ## Static Properties
 
+### defaultProps
+
+You must include the `defaultProps` static property, even if it is only an empty object.
+
 ### isComposableFormErrors
 
 Set this to `true` so that the containing form and other components know that your component implements the ErrorsBlock specification.
