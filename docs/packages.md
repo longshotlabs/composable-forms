@@ -4,28 +4,32 @@ If you create an NPM package that exports a component that implements this speci
 
 **No component will be listed here unless it conforms 100% to the specification. We will test and verify every component at the time of submission.**
 
-## React
+## React Components
 
-### Packages that export Form components
-
-[reacto-form](https://github.com/DairyStateDesigns/reacto-form)
-
-### Packages that export FormList components
+### Packages providing Form components
 
 [reacto-form](https://github.com/DairyStateDesigns/reacto-form)
 
-### Packages that export Field components
+### Packages providing FormList components
 
 [reacto-form](https://github.com/DairyStateDesigns/reacto-form)
 
-### Packages that export ErrorsBlock components
+### Packages providing Field components
 
 [reacto-form](https://github.com/DairyStateDesigns/reacto-form)
 
-### Packages that export Input components
+### Packages providing ErrorsBlock components
 
 [reacto-form](https://github.com/DairyStateDesigns/reacto-form)
 
-### Packages that export validators
+### Packages providing Input components
 
+[reacto-form](https://github.com/DairyStateDesigns/reacto-form)
 
+## Validators
+
+[simpl-schema](https://github.com/aldeed/node-simple-schema) (0.4.0+):
+
+```
+validator={myFormSchema.getFormValidator()}
+```
