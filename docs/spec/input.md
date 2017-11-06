@@ -122,3 +122,7 @@ Dropdown-type selection inputs must add a first option that is shown when the va
 ## Example
 
 [ReactoForm Input](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Input.jsx)
+
+## Testing Your Component
+
+To add tests that help ensure your input properly implements the spec, use the [composable-form-tests](https://github.com/DairyStateDesigns/composable-form-tests) package.
