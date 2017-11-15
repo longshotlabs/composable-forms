@@ -2,6 +2,8 @@
 
 ReactoForm is our React implementation of the [Composable Form Specification](user.md). It provides Form, FormList, Field, and ErrorsBlock components, as well as several basic Input components. The Form component should meet the needs of most developers. The other components are somewhat opinionated examples that many developers will be fine with and can style as necessary. Those that need something different can publish their own components in a separate package following the spec.
 
+<a href="https://github.com/DairyStateDesigns/reacto-form" class="btn btn-success btn-sm" target="_blank">View ReactoForm Source</a>
+
 ## Installation
 
 ```bash
