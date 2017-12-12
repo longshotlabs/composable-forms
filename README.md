@@ -1,8 +1,8 @@
 # "Composable Form Specification" Documentation Site
 
-Uses [mkdocs](http://www.mkdocs.org/)
+Running or building this repo locally requires [mkdocs](http://www.mkdocs.org/) 0.17.2 or higher.
 
-## Editing
+## Running Locally and Making Changes
 
 To view in browser and refresh when editing locally:
 
@@ -12,7 +12,7 @@ $ mkdocs serve
 
 Then go to http://localhost:8000/
 
-Edit only the files in /docs and mkdocs.yml and this readme. Do not edit anything in /site or it will be lost on the next build.
+Refer to [CONTRIBUTING.md]
 
 ## Deploying
 
