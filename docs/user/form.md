@@ -75,11 +75,11 @@ If using a Form within another Form, set this to the desired object path where t
 PropTypes.func
 ```
 
-This function will be called as the form object changes, for example while a user is typing in one of the inputs. This is called more frequently than `onChanged` but not necessarily on every single character change.
+This function will be called as the form object changes, for example while a user is typing in one of the inputs. This is called more frequently than `onChange` but not necessarily on every single character change.
 
 This may also be called on initial render to update default and hard coded input values.
 
-### onChanged
+### onChange
 
 ```js
 PropTypes.func
@@ -103,7 +103,7 @@ Provide a function that returns a Promise that resolves if submission was succes
 PropTypes.obj
 ```
 
-If the form is editing an existing object, provide it here. You can also provide an object with default values for a creation form. This is a basic JavaScript object which must match the structure of the object that the form component builds and passes to `onChanging`, `onChanged`, and `onSubmit`.
+If the form is editing an existing object, provide it here. You can also provide an object with default values for a creation form. This is a basic JavaScript object which must match the structure of the object that the form component builds and passes to `onChanging`, `onChange`, and `onSubmit`.
 
 ### validateOn
 

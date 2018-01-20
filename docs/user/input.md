@@ -62,13 +62,13 @@ As the input value changes, the input component will call `onChanging(newValue)`
 
 Calls to `onChanging` may be throttled as necessary by the input. Thus, you should never expect that every single value change is passed to `onChanging`. For example, a throttled text input may call `onChanging` on every typed letter for a slow typer, but call only every third typed letter for a fast typer.
 
-### onChanged
+### onChange
 
 ```js
 PropTypes.func
 ```
 
-After the input value changes, the input component will call `onChanged(newValue)`, where `newValue` is the new value after the most recent user entry. For example, a text entry input may call `onChanging` repeatedly while a user types, and then call `onChanged` after they stop typing for a bit, or after they click, tap, or tab off the field.
+After the input value changes, the input component will call `onChange(newValue)`, where `newValue` is the new value after the most recent user entry. For example, a text entry input may call `onChanging` repeatedly while a user types, and then call `onChange` after they stop typing for a bit, or after they click, tap, or tab off the field.
 
 ### isRequired
 

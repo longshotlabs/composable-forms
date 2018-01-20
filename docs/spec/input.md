@@ -6,12 +6,12 @@ A component that actually displays and collects data. An input results in any Ja
 
 Because the closest `Form` type component does much of the heavy work, creating your own `Input` type component is not difficult.
 
-- When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChanged` with that value. Your component may have a default value that is used when the `value` prop is undefined.
+- When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChange` with that value. Your component may have a default value that is used when the `value` prop is undefined.
 - Render the value from state for the user to see and edit. If the `isReadOnly` prop is `true`, do not allow editing it. If you want your component to always be read only, you do not have to provide any way to edit. (Make sure to document this.)
 - Document the expected data type of your `value`, and throw errors whenever the data type is incorrect.
 - If the user edits the value and you believe that their editing is in progress, update your internal value state and then call `onChanging`, passing it the new value.
-- If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` AND `onChanged`, in that order, passing them the new value.
-- If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` AND `onChanged`, in that order, passing them the new value.
+- If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` AND `onChange`, in that order, passing them the new value.
+- If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` AND `onChange`, in that order, passing them the new value.
 - Visually, do not include any margin (no whitespace above, below, or to either side of your component). Exceptions can be made, but know that fields and forms in general will expect no margin.
 - Optionally call `onSubmit` property if the user does something that makes you think they want to submit the form.
 - Optionally show an indication or alter styles when the `isRequired` property is `true`
@@ -60,9 +60,9 @@ Depending on what an input value's data type is and other factors, there are add
 
 ### Inputs With String Value
 
-Must accept an optional boolean property `convertEmptyStringToNull`, which if `true` should always call `onChanged` and `onChanging` with `null` rather than `""`. The default value for this property can be either `true` or `false`, as the component author prefers. This feature is useful for some validation libraries where an empty string does not result in a "required" error, or to avoid storing empty strings in your database.
+Must accept an optional boolean property `convertEmptyStringToNull`, which if `true` should always call `onChange` and `onChanging` with `null` rather than `""`. The default value for this property can be either `true` or `false`, as the component author prefers. This feature is useful for some validation libraries where an empty string does not result in a "required" error, or to avoid storing empty strings in your database.
 
-Must accept an optional boolean property `trimValue`, which if `true` should always call `onChanged` and `onChanging` with a string that has no whitespace at the beginning or end. The default value for this property can be either `true` or `false`, as the component author prefers.
+Must accept an optional boolean property `trimValue`, which if `true` should always call `onChange` and `onChanging` with a string that has no whitespace at the beginning or end. The default value for this property can be either `true` or `false`, as the component author prefers.
 
 If both `trimValue` and `convertEmptyStringToNull` are `true`, the component should first trim, and then convert to null.
 

@@ -32,11 +32,11 @@ Set this to the desired object path where the value should be stored, using obje
 PropTypes.func
 ```
 
-This function will be called as the FormList array changes, for example while a user is typing in one of the inputs. This is called more frequently than `onChanged` but not necessarily on every single character change.
+This function will be called as the FormList array changes, for example while a user is typing in one of the inputs. This is called more frequently than `onChange` but not necessarily on every single character change.
 
 This may also be called on initial render to update default and hard coded input values.
 
-### onChanged
+### onChange
 
 ```js
 PropTypes.func
