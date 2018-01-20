@@ -6,16 +6,25 @@ A component that actually displays and collects data. An input results in any Ja
 
 Because the closest `Form` type component does much of the heavy work, creating your own `Input` type component is not difficult.
 
-- When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChange` with that value. Your component may have a default value that is used when the `value` prop is undefined.
-- Render the value from state for the user to see and edit. If the `isReadOnly` prop is `true`, do not allow editing it. If you want your component to always be read only, you do not have to provide any way to edit. (Make sure to document this.)
+### An Input MUST (Requirements)
+
+- Take a prop named `value` and render it for the user to see and edit. If the `isReadOnly` prop is `true`, do not allow editing it. If you want your component to always be read only, you do not have to provide any way to edit. (Make sure to document this.)
+- If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` (if it supports an `onChanging` prop) AND `onChange`, in that order, passing them the new value.
+
+### An Input SHOULD (Recommendations)
+
 - Document the expected data type of your `value`, and throw errors whenever the data type is incorrect.
-- If the user edits the value and you believe that their editing is in progress, update your internal value state and then call `onChanging`, passing it the new value.
-- If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` AND `onChange`, in that order, passing them the new value.
-- If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` AND `onChange`, in that order, passing them the new value.
 - Visually, do not include any margin (no whitespace above, below, or to either side of your component). Exceptions can be made, but know that fields and forms in general will expect no margin.
-- Optionally call `onSubmit` property if the user does something that makes you think they want to submit the form.
-- Optionally show an indication or alter styles when the `isRequired` property is `true`
-- Optionally show an indication or alter styles when the `errors` property has errors
+
+### An Input MAY (As Necessary)
+
+- Keep internal state
+  - When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChange` with that value. Your component may have a default value that is used when the `value` prop is undefined.
+  - If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` (if it supports an `onChanging` prop) AND `onChange`, in that order, passing them the new value.
+- If the user edits the value and you believe that their editing is in progress, update your internal value state and then call `onChanging`, passing it the new value.
+- Accept an `onSubmit` property and call the passed function if the user does something that makes you think they want to submit the form (for example, presses Enter).
+- Show an indication or alter styles when the `isRequired` property is `true`
+- Show an indication or alter styles when the `errors` property is a non-empty array
 
 ## Additional Properties
 
@@ -28,29 +37,31 @@ These properties are not strictly governed by this specification, but in order t
 
 ## Static Properties
 
-### defaultProps
+### defaultProps [OPTIONAL]
 
-You must include the `defaultProps` static property, even if it is only an empty object.
+Setting the `defaultProps` static property is recommended but not required.
 
-### isFormInput
+### isFormInput [REQUIRED]
 
 Set this to `true` so that the containing form and other components know that your component implements the Input specification.
 
-## Instance Properties
+## Instance Methods
 
-### isDirty()
+These instance methods are optional for inputs, but you should use these names for them if you support these functions. Also, if you provide one of them, you should provide all four.
+
+### isDirty() [OPTIONAL]
 
 Returns a boolean indicating whether anything has been entered/changed by the user. Return `true` if the value state does not match the value prop.
 
-### getValue()
+### getValue() [OPTIONAL]
 
 Returns the current value of the input in state
 
-### resetValue()
+### resetValue() [OPTIONAL]
 
 Update the value state to match the value prop, erasing any user changes
 
-### setValue(value)
+### setValue(value) [OPTIONAL]
 
 Update the value state to be the provided value. This is similar to passing a new value to the `value` prop except that `isDirty()` will return true after setting it this way if the set value doesn't match the prop value, so this is the best way to simulate the user having entered/chosen a value.
 
@@ -122,6 +133,14 @@ Dropdown-type selection inputs must add a first option that is shown when the va
 ## Example
 
 [ReactoForm Input](https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Input.jsx)
+
+## FAQ
+
+### Why is `isReadOnly` prop supported but not `isDisabled`?
+
+In HTML, the form `input` element has both a `readonly` attribute and a `disabled` attribute. They are subtly different. The primary difference is that values from disabled inputs are not included when you serialize an HTML form. Also, disabled inputs do not receive focus and cannot be tabbed to. Read-only inputs, on the other hand, can be tabbed to, can receive focus, and are included in the serialized form values.
+
+These distinctions do not really matter when doing forms this way, so we include only a single prop, `isReadOnly`. We use this rather than `isDisabled` because it is a clearer description. If you create an input component that ultimately renders an HTML input, you may choose to map `isReadOnly` to either HTML attribute.
 
 ## Testing Your Component
 

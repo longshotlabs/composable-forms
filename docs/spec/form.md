@@ -124,31 +124,31 @@ The form must call `validator(value)` whenever it needs to validate. It needs to
 
 ## Static Properties
 
-### defaultProps
+### defaultProps [REQUIRED]
 
 You must include the `defaultProps` static property, even if it is only an empty object.
 
-### isForm
+### isForm [REQUIRED]
 
 Set this to `true` so that other components know that your component implements the Form specification.
 
 ## Instance Properties
 
-### isDirty()
+### isDirty() [REQUIRED]
 
 Returns a boolean indicating whether anything has been entered/changed by the user.
 
-### getValue()
+### getValue() [REQUIRED]
 
 Returns the current value of the form in state
 
-### validate()
+### validate() [REQUIRED]
 
 This function must call the `validator` function and then update the errors tracked in state. It must also return a Promise that resolves with the errors array.
 
 See the ReactoForm Form component's validate function for an example.
 
-### submit()
+### submit() [REQUIRED]
 
 This function must call the `validator` function and then call the `onSubmit` function.
 
@@ -158,9 +158,10 @@ Expect `validator` to return an array of error objects a Promise that resolves w
 
 See the ReactoForm Form component's submit function for an example.
 
-### resetValue()
+### resetValue() [REQUIRED]
 
 This function must do the following:
+
 - Reset the value state to match the value prop
 - Clear all validation errors in state
 - Call `element.resetValue()` on all descendant Inputs, Forms, and FormLists, down to exactly one level of nesting.

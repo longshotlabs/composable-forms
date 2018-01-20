@@ -53,11 +53,11 @@ These properties are not strictly governed by this specification, but in order t
 
 ## Static Properties
 
-### defaultProps
+### defaultProps [OPTIONAL]
 
-You must include the `defaultProps` static property, even if it is only an empty object.
+Setting the `defaultProps` static property is recommended but not required.
 
-### isFormField
+### isFormField [REQUIRED]
 
 Set this to `true` so that the containing form and other components know that your component implements the Field specification.
 

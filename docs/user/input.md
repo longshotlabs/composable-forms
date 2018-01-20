@@ -97,6 +97,8 @@ These properties are not strictly governed by this specification, but in order t
 
 ## Instance Properties
 
+These instance methods are optional. A particular input may have chosen not to support them, but inputs that do support them will use these names for them.
+
 ### isDirty()
 
 Returns a boolean indicating whether anything has been entered/changed by the user.
