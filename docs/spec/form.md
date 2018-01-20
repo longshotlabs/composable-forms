@@ -16,12 +16,12 @@ A `Form` type component is the most complicated component to create. It must do 
 
 A form component, when rendering its descendants recursively, must check whether any of them implement this spec, and if so pass additional properties to them. What follows is an explanation of which properties to pass for each component type.
 
-### ErrorsBlock (isComposableFormErrors is `true`)
+### ErrorsBlock (isFormErrors is `true`)
 
 - Check `names` array prop
 - If `errors` prop is `undefined`, pass the form's `errors` array, filtered to only those where `name` exactly matches one or more of the strings in the `names` array. If `names` is falsy, do not pass any errors.
 
-### Input (isComposableFormInput is `true`)
+### Input (isFormInput is `true`)
 
 - Check `name` string prop
 - If no name, ignore
@@ -37,15 +37,15 @@ A form component, when rendering its descendants recursively, must check whether
 - If `errors` prop is `undefined`, pass the form's `errors` array, filtered to only those where the error `name` either exactly matches the component `name` or starts with the component `name` plus a dot or open bracket. If `name` is falsy, do not pass any errors.
 - If `isReadOnly` prop is a function, call it passing the current form value and pass the return value to the component instead
 
-### Form (isComposableForm is `true`)
+### Form (isForm is `true`)
 
 Same logic as Input but no `isReadOnly` prop
 
-### FormList (isComposableFormList is `true`)
+### FormList (isFormList is `true`)
 
 Same logic as Input but no `isReadOnly` prop
 
-### Field (isComposableFormField is `true`)
+### Field (isFormField is `true`)
 
 - If `errors` prop is `undefined`, pass the form's `errors` array, filtered to only those where the error `name` either exactly matches the Field `name` or starts with the Field `name` plus a dot or open bracket. If `name` is falsy, do not pass any errors.
 
@@ -128,7 +128,7 @@ The form must call `validator(value)` whenever it needs to validate. It needs to
 
 You must include the `defaultProps` static property, even if it is only an empty object.
 
-### isComposableForm
+### isForm
 
 Set this to `true` so that other components know that your component implements the Form specification.
 

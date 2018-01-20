@@ -14,7 +14,7 @@ It's best to start with the FormList component from ReactoForm and make modifica
 
 You must include the `defaultProps` static property, even if it is only an empty object.
 
-### isComposableFormList
+### isFormList
 
 Set this to `true` so that the containing form and other components know that your component implements the FormList specification.
 
