@@ -170,7 +170,7 @@ You can use the following props to customize:
 
 ### BooleanCheckboxInput
 
-Implements the [Input spec](spec/form.md) with a Boolean data type.
+Implements the [Input spec](spec/input.md) with a Boolean data type.
 
 Renders something like
 
@@ -189,7 +189,7 @@ You can use the following props to customize:
 
 ### DateTimeInput
 
-Implements the [Input spec](spec/form.md) with a Date data type.
+Implements the [Input spec](spec/input.md) with a Date data type.
 
 Renders multiple HTML inputs that together allow the user to enter a specific date + time in a given timezone. This includes a month select, with month names in English.
 
@@ -197,7 +197,7 @@ There are many ways that datetime entry can be done and this represents just one
 
 ### Input
 
-Implements the [Input spec](spec/form.md) with a String data type.
+Implements the [Input spec](spec/input.md) with a String data type.
 
 This renders as an HTML input element or a textarea element. Specify the `type` prop as you would for HTML, but only the following types are allowed:
 
@@ -234,7 +234,7 @@ You can use the following props to customize:
 
 ### SelectInput
 
-Implements the [Input spec](spec/form.md) with user-defined options that may have a Boolean, Number, or String data type. Single selection.
+Implements the [Input spec](spec/input.md) with user-defined options that may have a Boolean, Number, or String data type. Single selection.
 
 See the "Selection Inputs" section of [the Input Component Reference](user/input.md) for details about passing options.
 
@@ -245,7 +245,7 @@ You can use the following props to customize:
 
 ### SelectCheckboxInput
 
-Implements the [Input spec](spec/form.md) with user-defined options that may have a Boolean, Number, or String data type. Multiple selection.
+Implements the [Input spec](spec/input.md) with user-defined options that may have a Boolean, Number, or String data type. Multiple selection.
 
 See the "Selection Inputs" section of [the Input Component Reference](user/input.md) for details about passing options.
 
