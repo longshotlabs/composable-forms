@@ -1,6 +1,6 @@
 # Input Component Specification
 
-A component that actually displays and collects data. An input results in any JavaScript data type.
+A component that displays and collects data. An input results in any JavaScript data type.
 
 ## Implementation
 
@@ -8,27 +8,31 @@ Because the closest `Form` type component does much of the heavy work, creating 
 
 ### An Input MUST (Requirements)
 
-- Take a prop named `value` and render it for the user to see and edit. If the `isReadOnly` prop is `true`, do not allow editing it. If you want your component to always be read only, you do not have to provide any way to edit. (Make sure to document this.)
+- Have a static class property named `isFormInput` that is set to `true`
+- Take a prop named `value` and render it for the user to see.
+- Call `onChanging` (if it supports an `onChanging` prop) AND `onChange`, in that order, on mount. Pass them the incoming `value` prop value.
 - If the user edits the value and you believe that their editing is done for now, update your internal value state and then call `onChanging` (if it supports an `onChanging` prop) AND `onChange`, in that order, passing them the new value.
+- When the `value` prop changes and doesn't match the current shown value, update the shown value to the value from the incoming `value` prop.
+- May not have a default value for the `value` or `errors` props.
 
 ### An Input SHOULD (Recommendations)
 
+- If the `isReadOnly` prop is falsy, allow editing the value in some way. If you want your component to always be read only, you do not have to provide any way to edit and you can ignore the `isReadOnly` prop. Make sure to document this.
 - Document the expected data type of your `value`, and throw errors whenever the data type is incorrect.
 - Visually, do not include any margin (no whitespace above, below, or to either side of your component). Exceptions can be made, but know that fields and forms in general will expect no margin.
 
 ### An Input MAY (As Necessary)
 
 - Keep internal state
-  - When the component is mounting, first store the current value, based on the incoming `value` property, in internal state. Then call `onChanging` followed by `onChange` with that value. Your component may have a default value that is used when the `value` prop is undefined.
-  - If the `value` prop changes after the initial render, update your internal value state to match the new value and then call `onChanging` (if it supports an `onChanging` prop) AND `onChange`, in that order, passing them the new value.
 - If the user edits the value and you believe that their editing is in progress, update your internal value state and then call `onChanging`, passing it the new value.
 - Accept an `onSubmit` property and call the passed function if the user does something that makes you think they want to submit the form (for example, presses Enter).
 - Show an indication or alter styles when the `isRequired` property is `true`
-- Show an indication or alter styles when the `errors` property is a non-empty array
+- Show an indication or alter styles when the `errors` property is a non-empty array (error styling)
+- Show an indication or alter styles when the `errors` property is an empty array and the `hasBeenValidated` property is `true` (success styling)
 
 ## Additional Properties
 
-These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions:
+These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions if you support these features:
 
 - `className` (string): For inputs that render HTML, to be used as the `className` prop on the outermost element.
 - `maxLength` (integer): For inputs that support limiting the number of characters the user can type.
@@ -51,15 +55,15 @@ These instance methods are optional for inputs, but you should use these names f
 
 ### isDirty() [OPTIONAL]
 
-Returns a boolean indicating whether anything has been entered/changed by the user. Return `true` if the value state does not match the value prop.
+Returns a boolean indicating whether anything has been entered/changed by the user or by a call to the `setValue` instance method.
 
 ### getValue() [OPTIONAL]
 
-Returns the current value of the input in state
+Returns the current value the input is showing
 
 ### resetValue() [OPTIONAL]
 
-Update the value state to match the value prop, erasing any user changes
+Update the shown value to match the value prop, erasing any user changes
 
 ### setValue(value) [OPTIONAL]
 
@@ -140,7 +144,7 @@ Dropdown-type selection inputs must add a first option that is shown when the va
 
 In HTML, the form `input` element has both a `readonly` attribute and a `disabled` attribute. They are subtly different. The primary difference is that values from disabled inputs are not included when you serialize an HTML form. Also, disabled inputs do not receive focus and cannot be tabbed to. Read-only inputs, on the other hand, can be tabbed to, can receive focus, and are included in the serialized form values.
 
-These distinctions do not really matter when doing forms this way, so we include only a single prop, `isReadOnly`. We use this rather than `isDisabled` because it is a clearer description. If you create an input component that ultimately renders an HTML input, you may choose to map `isReadOnly` to either HTML attribute.
+These distinctions do not really matter when doing forms this way, so we include only a single prop, `isReadOnly`. We use this rather than `isDisabled` because it is a clearer description. If you create an input component that ultimately renders an HTML input, you may choose to map `isReadOnly` to either HTML attribute. You can also add `isDisabled` if you really need to.
 
 ## Testing Your Component
 

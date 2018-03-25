@@ -15,13 +15,9 @@ import mySubmissionFunction from './mySubmissionFunction';
 import myValidationFunction from './myValidationFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form ref={i => { this.form = i; }} onSubmit={this.onSubmit} validator={myValidationFunction}>
+      <Form ref={i => { this.form = i; }} onSubmit={mySubmissionFunction} validator={myValidationFunction}>
         <Input name="firstName" type="text" />
         <Input name="lastName" type="text" />
         <button type="button" onClick={() => { this.form.submit(); }}>Submit</button>
@@ -95,7 +91,13 @@ This may also be called on initial render to update default and hard coded input
 PropTypes.func
 ```
 
-Provide a function that returns a Promise that resolves if submission was successful. If unsuccessful, the Promise should reject. On success, the Form component will reset all input values to match the values in the object in the Form's `value` property (by calling `form.resetValue()`).
+Provide a function that returns a Promise.
+
+- If successfully submitted, return `undefined`, `null`, or `{ ok: true }`.
+- If submission failed, and you have additional validation errors that you want shown, return `{ ok: false, errors }`, where `errors` is the standard errors array.
+- If submission failed and you've already notified the user in the user interface, you can return `{ ok: false }` or reject, whichever is most convenient.
+
+When you return `undefined`, `null`, or `{ ok: true }`, the Form component will reset all input values to match the values in the object in the Form's `value` property (by calling `form.resetValue()`).
 
 ### value
 
@@ -111,15 +113,15 @@ If the form is editing an existing object, provide it here. You can also provide
 PropTypes.oneOf(['changing', 'changed', 'submit'])
 ```
 
-This determines how often the form will run the `validator` function when the form's value is currently VALID. The default is "submit". To skip validation, simply do not provide a `validator` function.
+This determines which event will run the `validator` function initially, after first mount or after `resetValue` has been called. The default is "submit". To skip validation, simply do not provide a `validator` function.
 
-### validateOnWhenInvalid
+### revalidateOn
 
 ```js
 PropTypes.oneOf(['changing', 'changed', 'submit'])
 ```
 
-This determines how often the form will run the `validator` function when the form's value is currently INVALID. The default is "changing". To skip validation, simply do not provide a `validator` function.
+This determines how often the form will run the `validator` function after the initial validation is triggered based on `validateOn`, and until the form is reset by calling `resetValue` (which is also a side effect of a successful `onSubmit` call). The default is "changing". To skip validation, simply do not provide a `validator` function.
 
 ### validator
 
@@ -128,6 +130,14 @@ PropTypes.func
 ```
 
 If you want to use the built-in validation and error message handling, provide a validator function. This is a function that accepts a single argument that is the object to be validated and returns a Promise that resolves with a potentially empty errors array (see the `errors` property and `validator` spec).
+
+### hasBeenValidated
+
+```js
+PropTypes.bool
+```
+
+This is set by parent forms when they are handling the validation for a child form.
 
 ## Instance Properties
 

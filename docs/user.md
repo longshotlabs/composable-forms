@@ -18,13 +18,9 @@ import { Form } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
       </Form>
     );
   }
@@ -39,13 +35,9 @@ import { Form } from 'other-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
       </Form>
     );
   }
@@ -68,13 +60,9 @@ import { Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
         <Input name="firstName" type="text" />
         <Input name="lastName" type="text" />
       </Form>
@@ -99,13 +87,9 @@ import { Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form ref={i => { this.form = i; }} onSubmit={this.onSubmit}>
+      <Form ref={i => { this.form = i; }} onSubmit={mySubmissionFunction}>
         <Input name="firstName" type="text" />
         <Input name="lastName" type="text" />
         <button type="button" onClick={() => { this.form.submit(); }}>Submit</button>
@@ -115,7 +99,7 @@ class SomePage extends Component {
 }
 ```
 
-As per the specification, the Form component (regardless of which package provides it) will have a `submit()` instance function and will call the `onSubmit` function based on that.
+As per the specification, the Form component (regardless of which package provides it) will have a `submit()` instance method and will call the `onSubmit` function based on that.
 
 The `data` passed to `onSubmit` is an object created by combining all of the descendant values. In this case:
 
@@ -162,13 +146,9 @@ import { Field, Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
         <Field label="First Name">
           <Input name="firstName" type="text" />
         </Field>
@@ -199,13 +179,9 @@ import { Field, Form, Input } from 'reacto-form';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
         <Field label="First Name">
           <Input name="firstName" type="text" />
         </Field>
@@ -238,13 +214,9 @@ import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
         <Field label="First Name">
           <Input name="firstName" type="text" />
         </Field>
@@ -288,13 +260,9 @@ import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
-  onSubmit = (data, isValid) => {
-    if (isValid) mySubmissionFunction(data);
-  };
-
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={mySubmissionFunction}>
         <Field label="First Name">
           <Input name="firstName" type="text" />
         </Field>

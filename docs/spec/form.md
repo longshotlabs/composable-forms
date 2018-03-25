@@ -28,7 +28,7 @@ A form component, when rendering its descendants recursively, must check whether
 - Pass functions for `onChange` and `onChanging` props:
   - Retain any functions already supplied for those props and call them first.
   - Update the form's value object using lodash.set, the value (first argument), and the `name` prop. `set(obj, name, value);`
-  - Examine `validateOn` and `validateOnWhenInvalid` to determine whether the object should be revalidated. If so, call `this.validate()`.
+  - Examine `validateOn` and `revalidateOn` to determine whether the object should be revalidated. If so, call `this.validate()`.
   - Call the form's `onChange` or `onChanging` as required, passing both the new form object and the validaty boolean as arguments.
 - Pass functions for `onSubmit` prop
   - First call the user-supplied `onSubmit` for the component, if there is one
@@ -106,13 +106,13 @@ PropTypes.oneOf(['changing', 'changed', 'submit'])
 
 The form must validate prior to calling one of these event functions. Default property value must be "submit". To skip validation, a user would simply not provide a `validator` function.
 
-### validateOnWhenInvalid
+### revalidateOn
 
 ```js
 PropTypes.oneOf(['changing', 'changed', 'submit'])
 ```
 
-This is like `validateOn` but this value is used instead of `validateOn` whenever the form is currently invalid. Default property value must be "changing".
+This is like `validateOn` but this value is used instead of `validateOn` whenever the form has already been validated once since it was first mounted or since the `resetValue` instance method was called. Default property value must be "changing".
 
 ### validator
 
@@ -120,7 +120,15 @@ This is like `validateOn` but this value is used instead of `validateOn` wheneve
 PropTypes.func
 ```
 
-The form must call `validator(value)` whenever it needs to validate. It needs to validate whenever `validateOn` and `validateOnWhenInvalid` props say that it should.
+The form must call `validator(value)` whenever it needs to validate. It needs to validate whenever `validateOn` and `revalidateOn` props say that it should.
+
+### hasBeenValidated
+
+```js
+PropTypes.bool
+```
+
+If this property is set, it must override the internal tracking of whether the `validator` function has been called. This is used by parent forms when they are handling the validation for a child form.
 
 ## Static Properties
 
@@ -150,11 +158,18 @@ See the ReactoForm Form component's validate function for an example.
 
 ### submit() [REQUIRED]
 
-This function must call the `validator` function and then call the `onSubmit` function.
+This function must call the `validator` function and then potentially call the `onSubmit` function.
 
 The object to pass to both functions is the most recent object representing all the form values, which you should be tracking in state. A form object may not be passed to `onSubmit` unless it has first been passed to both `onChanging` and `onChange`.
 
-Expect `validator` to return an array of error objects a Promise that resolves with an array of error objects, and expect `onSubmit` to return either `undefined` or a Promise that resolves if submission was successful. Upon success, the Form component must call `resetValue` instance function. If `onSubmit` throws or the returned Promise rejects, do not reset values.
+1. If `validator` prop isn't a function, exit.
+1. Call `validator` and expect it to return an array of error objects a Promise that resolves with an array of error objects.
+1. If `validator` rejects or throws, optionally log the error, and then exit.
+1. Store the errors array for passing down to child components.
+1. If the errors array is empty or (the errors array is non-empty and `shouldSubmitWhenInvalid` is `true`), call `onSubmit`.
+1. If `onSubmit` returns or resolves with `undefined`, `null`, or an object with property `ok` set to `true`, consider the submission successfully completed. Call the `resetValue` method, and then exit.
+1. If `onSubmit` returns or resolves with an object with property `ok` NOT set to `true`, consider the submission failed. If the result object also contains an `errors` property set to an errors array, store the errors array for passing down to child components. Exit without calling the `resetValue` method.
+1. If `onSubmit` rejects or throws, optionally log the error, and then exit. Do not call `resetValue` method.
 
 See the ReactoForm Form component's submit function for an example.
 
