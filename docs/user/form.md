@@ -10,7 +10,8 @@ React JSX example:
 
 ```js
 import React, { Component } from 'react';
-import { Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
 import mySubmissionFunction from './mySubmissionFunction';
 import myValidationFunction from './myValidationFunction';
 

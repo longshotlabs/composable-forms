@@ -56,7 +56,8 @@ Anyway, let's add some inputs to our form.
 
 ```js
 import React, { Component } from 'react';
-import { Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
@@ -83,7 +84,8 @@ We will now add a Submit button:
 
 ```js
 import React, { Component } from 'react';
-import { Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
@@ -142,7 +144,8 @@ In most cases, you'll want some additional stuff around your input: a label, err
 
 ```js
 import React, { Component } from 'react';
-import { Field, Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
@@ -175,7 +178,8 @@ A nesting example:
 
 ```js
 import React, { Component } from 'react';
-import { Field, Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
 import mySubmissionFunction from './mySubmissionFunction';
 
 class SomePage extends Component {
@@ -209,7 +213,8 @@ Packages can choose to export entire premade forms as long as they conform the t
 
 ```js
 import React, { Component } from 'react';
-import { Field, Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
 import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
@@ -255,7 +260,8 @@ Here is a twist on an earlier example, if we wanted to let a user enter any numb
 
 ```js
 import React, { Component } from 'react';
-import { Field, Form, FormList, Input } from 'reacto-form';
+import { Form, FormList } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
 import AddressForm from 'nifty-address-form-package';
 import mySubmissionFunction from './mySubmissionFunction';
 
@@ -303,7 +309,8 @@ You'll often want to apply certain styles, classes, or other props to all instan
 Here's an example of using this pattern to apply Bootstrap classes to ReactoForm components:
 
 ```js
-import { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Form, FormList, Input, SelectCheckboxInput } from 'reacto-form';
+import { Form, FormList } from 'reacto-form';
+import { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Input, SelectCheckboxInput } from 'reacto-form-inputs';
 import moment from 'moment-timezone';
 
 BooleanCheckboxInput.defaultProps.className = 'checkbox';

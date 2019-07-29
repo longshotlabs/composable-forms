@@ -41,7 +41,8 @@ You would use it like this:
 
 ```js
 import React, { Component } from 'react';
-import { Field, Form, Input } from 'reacto-form';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
 import getRequiredValidator from './getRequiredValidator';
 
 const validator = getRequiredValidator('firstName', 'lastName');
