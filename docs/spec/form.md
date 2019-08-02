@@ -28,11 +28,11 @@ A form component, when rendering its descendants recursively, must check whether
 - Pass functions for `onChange` and `onChanging` props:
   - Retain any functions already supplied for those props and call them first.
   - Update the form's value object using lodash.set, the value (first argument), and the `name` prop. `set(obj, name, value);`
-  - Examine `validateOn` and `revalidateOn` to determine whether the object should be revalidated. If so, call `this.validate()`.
-  - Call the form's `onChange` or `onChanging` as required, passing both the new form object and the validaty boolean as arguments.
+  - Examine `validateOn` and `revalidateOn` to determine whether the object should be revalidated. If so, call the form validate function.
+  - Call the form's `onChange` or `onChanging` as required, passing both the new form object and the validity boolean as arguments.
 - Pass functions for `onSubmit` prop
   - First call the user-supplied `onSubmit` for the component, if there is one
-  - Then call `this.submit()` for the form
+  - Then call the form submit function
 - If `value` prop is `undefined`, pass in the current value `get(formValueObject, name)`
 - If `errors` prop is `undefined`, pass the form's `errors` array, filtered to only those where the error `name` either exactly matches the component `name` or starts with the component `name` plus a dot or open bracket. If `name` is falsy, do not pass any errors.
 - If `isReadOnly` prop is a function, call it passing the current form value and pass the return value to the component instead
@@ -142,11 +142,11 @@ Set this to `true` so that other components know that your component implements 
 
 ## Instance Properties
 
-### isDirty() [REQUIRED]
+### isDirty() [OPTIONAL]
 
 Returns a boolean indicating whether anything has been entered/changed by the user.
 
-### getValue() [REQUIRED]
+### getValue() [OPTIONAL]
 
 Returns the current value of the form in state
 

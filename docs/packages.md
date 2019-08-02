@@ -2,7 +2,7 @@
 
 If you create an NPM package that exports a component that implements this specification, we'd like to list it here.
 
-**No component will be listed here unless it conforms 100% to the specification. We will test and verify every component at the time of submission.**
+**No component will be listed here unless it conforms to the specification or can be easily made to conform. We will test and verify every component at the time of submission.**
 
 ## React Components
 
@@ -16,15 +16,19 @@ If you create an NPM package that exports a component that implements this speci
 
 ### Packages providing Field components
 
-[reacto-form](https://github.com/DairyStateDesigns/reacto-form)
+- [reacto-form-inputs](https://github.com/DairyStateDesigns/reacto-form-inputs)
+- [@reactioncommerce/components](https://designsystem.reactioncommerce.com/#/Base%20Components/Forms/Field)
 
 ### Packages providing ErrorsBlock components
 
-[reacto-form](https://github.com/DairyStateDesigns/reacto-form)
+- [reacto-form-inputs](https://github.com/DairyStateDesigns/reacto-form-inputs)
+- [@reactioncommerce/components](https://designsystem.reactioncommerce.com/#/Base%20Components/Forms/ErrorsBlock)
 
 ### Packages providing Input components
 
-[reacto-form](https://github.com/DairyStateDesigns/reacto-form)
+- [reacto-form-inputs](https://github.com/DairyStateDesigns/reacto-form-inputs)
+- [@reactioncommerce/components](https://designsystem.reactioncommerce.com/#/Base%20Components/Forms)
+- [@material-ui/core](https://material-ui.com/components/text-fields/) works with some adjustments (see [useReactoForm Hook with non-compliant inputs](https://github.com/DairyStateDesigns/reacto-form#usereactoform-hook-with-non-compliant-inputs-material-ui-example))
 
 ## Validators
 
