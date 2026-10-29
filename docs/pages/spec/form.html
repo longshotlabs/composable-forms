@@ -1,0 +1,120 @@
+<h1 id="form-component-specification">Form Component Specification<a class="headerlink" href="#form-component-specification" title="Permanent link">&para;</a></h1>
+<p>A group of one or more fields, inputs, lists, or other forms. A form results in a JavaScript object.</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<p>A <code>Form</code> type component is the most complicated component to create. It must do the following:</p>
+<ul>
+<li>Expect one or more children and render them in order. Children that are part of this spec must be treated specially. They must be cloned with additional properties passed to them.</li>
+<li>Track the current form object in internal component state, updating it as <code>onChanging</code> or <code>onChange</code> props of its children are called. (Each form implementation can choose whether to use <code>onChanging</code> or <code>onChange</code> to update its state, or can make it configurable.) The object keys are derived from the <code>name</code> property of each descendant that is a field, input, list, or form.</li>
+<li>By listening for <code>onChange</code> and <code>onChanging</code> and <code>onSubmit</code> calls from descendants, bubble up these calls but also leave in place any listener functions provided by the user (so both would receive <code>onChange</code> for example).</li>
+<li>Automatically set the <code>value</code> property for input, list, or form descendants based on the form object value tracked in state, only if child value prop isn’t already set by the user.</li>
+<li>Enforce that every input, list, or form must have a <code>name</code> property that is set to a non-empty string.</li>
+</ul>
+<h2 id="rendering-descendants">Rendering Descendants<a class="headerlink" href="#rendering-descendants" title="Permanent link">&para;</a></h2>
+<p>A form component, when rendering its descendants recursively, must check whether any of them implement this spec, and if so pass additional properties to them. What follows is an explanation of which properties to pass for each component type.</p>
+<h3 id="errorsblock-isformerrors-is-true">ErrorsBlock (isFormErrors is <code>true</code>)<a class="headerlink" href="#errorsblock-isformerrors-is-true" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Check <code>names</code> array prop</li>
+<li>If <code>errors</code> prop is <code>undefined</code>, pass the form's <code>errors</code> array, filtered to only those where <code>name</code> exactly matches one or more of the strings in the <code>names</code> array. If <code>names</code> is falsy, do not pass any errors.</li>
+</ul>
+<h3 id="input-isforminput-is-true">Input (isFormInput is <code>true</code>)<a class="headerlink" href="#input-isforminput-is-true" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Check <code>name</code> string prop</li>
+<li>If no name, ignore</li>
+<li>Pass functions for <code>onChange</code> and <code>onChanging</code> props:</li>
+<li>Retain any functions already supplied for those props and call them first.</li>
+<li>Update the form's value object using lodash.set, the value (first argument), and the <code>name</code> prop. <code>set(obj, name, value);</code></li>
+<li>Examine <code>validateOn</code> and <code>revalidateOn</code> to determine whether the object should be revalidated. If so, call the form validate function.</li>
+<li>Call the form's <code>onChange</code> or <code>onChanging</code> as required, passing both the new form object and the validity boolean as arguments.</li>
+<li>Pass functions for <code>onSubmit</code> prop</li>
+<li>First call the user-supplied <code>onSubmit</code> for the component, if there is one</li>
+<li>Then call the form submit function</li>
+<li>If <code>value</code> prop is <code>undefined</code>, pass in the current value <code>get(formValueObject, name)</code></li>
+<li>If <code>errors</code> prop is <code>undefined</code>, pass the form's <code>errors</code> array, filtered to only those where the error <code>name</code> either exactly matches the component <code>name</code> or starts with the component <code>name</code> plus a dot or open bracket. If <code>name</code> is falsy, do not pass any errors.</li>
+<li>If <code>isReadOnly</code> prop is a function, call it passing the current form value and pass the return value to the component instead</li>
+</ul>
+<h3 id="form-isform-is-true">Form (isForm is <code>true</code>)<a class="headerlink" href="#form-isform-is-true" title="Permanent link">&para;</a></h3>
+<p>Same logic as Input but no <code>isReadOnly</code> prop</p>
+<h3 id="formlist-isformlist-is-true">FormList (isFormList is <code>true</code>)<a class="headerlink" href="#formlist-isformlist-is-true" title="Permanent link">&para;</a></h3>
+<p>Same logic as Input but no <code>isReadOnly</code> prop</p>
+<h3 id="field-isformfield-is-true">Field (isFormField is <code>true</code>)<a class="headerlink" href="#field-isformfield-is-true" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If <code>errors</code> prop is <code>undefined</code>, pass the form's <code>errors</code> array, filtered to only those where the error <code>name</code> either exactly matches the Field <code>name</code> or starts with the Field <code>name</code> plus a dot or open bracket. If <code>name</code> is falsy, do not pass any errors.</li>
+</ul>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>ALL properties are optional, but the <code>name</code> property is required on forms that are nested under other forms. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="errors">errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.shape({
+  message: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+}))
+</code></pre>
+<p>Array of error objects for all inputs on this form, as returned from the <code>validator</code> function.</p>
+<p>A top-level form would track the errors array in state while nested forms would receive them as props (since validation is done by the highest level form). A form component must handle the case where errors come from props and state by merging the two arrays into one before passing down to descendants.</p>
+<h3 id="onchanging">onChanging<a class="headerlink" href="#onchanging" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>As any input anywhere within the form or any of its subforms is changing, the form must call <code>onChanging(newValue, isValid)</code>, where <code>newValue</code> is the new value of the form object after the most recent user entry.</p>
+<p><code>onChanging</code> must never be called with the exact same value as the last time it was called.</p>
+<h3 id="onchange">onChange<a class="headerlink" href="#onchange" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>After any input anywhere within the form or any of its subforms has finished changing, the form must call <code>onChange(newValue, isValid)</code>, where <code>newValue</code> is the new value of the form object after the most recent user entry.</p>
+<p><code>onChange</code> must never be called with the exact same value as the last time it was called.</p>
+<p><code>onChange</code> must never be called with a <code>newValue</code> that hasn't been first passed to <code>onChanging</code>. (In other words, consumers can safely use ONLY <code>onChanging</code> without fear of missing any change.)</p>
+<h3 id="value">value<a class="headerlink" href="#value" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.obj
+</code></pre>
+<p>If the form is editing an existing object, it will be provided here. This is a basic JavaScript object which you can expect to match the structure of the object that the form component builds and passes to <code>onChanging</code>, <code>onChange</code>, and <code>onSubmit</code>.</p>
+<p>While we recommend that any change to this value should reset the internally stored, work-in-progress value, it is not required. If you update the value in state, you must call <code>onChanging</code> and <code>onChange</code> with the new value.</p>
+<h3 id="validateon">validateOn<a class="headerlink" href="#validateon" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.oneOf(['changing', 'changed', 'submit'])
+</code></pre>
+<p>The form must validate prior to calling one of these event functions. Default property value must be "submit". To skip validation, a user would simply not provide a <code>validator</code> function.</p>
+<h3 id="revalidateon">revalidateOn<a class="headerlink" href="#revalidateon" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.oneOf(['changing', 'changed', 'submit'])
+</code></pre>
+<p>This is like <code>validateOn</code> but this value is used instead of <code>validateOn</code> whenever the form has already been validated once since it was first mounted or since the <code>resetValue</code> instance method was called. Default property value must be "changing".</p>
+<h3 id="validator">validator<a class="headerlink" href="#validator" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>The form must call <code>validator(value)</code> whenever it needs to validate. It needs to validate whenever <code>validateOn</code> and <code>revalidateOn</code> props say that it should.</p>
+<h3 id="hasbeenvalidated">hasBeenValidated<a class="headerlink" href="#hasbeenvalidated" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>If this property is set, it must override the internal tracking of whether the <code>validator</code> function has been called. This is used by parent forms when they are handling the validation for a child form.</p>
+<h2 id="static-properties">Static Properties<a class="headerlink" href="#static-properties" title="Permanent link">&para;</a></h2>
+<h3 id="defaultprops-required">defaultProps [REQUIRED]<a class="headerlink" href="#defaultprops-required" title="Permanent link">&para;</a></h3>
+<p>You must include the <code>defaultProps</code> static property, even if it is only an empty object.</p>
+<h3 id="isform-required">isForm [REQUIRED]<a class="headerlink" href="#isform-required" title="Permanent link">&para;</a></h3>
+<p>Set this to <code>true</code> so that other components know that your component implements the Form specification.</p>
+<h2 id="instance-properties">Instance Properties<a class="headerlink" href="#instance-properties" title="Permanent link">&para;</a></h2>
+<h3 id="isdirty-optional">isDirty() [OPTIONAL]<a class="headerlink" href="#isdirty-optional" title="Permanent link">&para;</a></h3>
+<p>Returns a boolean indicating whether anything has been entered/changed by the user.</p>
+<h3 id="getvalue-optional">getValue() [OPTIONAL]<a class="headerlink" href="#getvalue-optional" title="Permanent link">&para;</a></h3>
+<p>Returns the current value of the form in state</p>
+<h3 id="validate-required">validate() [REQUIRED]<a class="headerlink" href="#validate-required" title="Permanent link">&para;</a></h3>
+<p>This function must call the <code>validator</code> function and then update the errors tracked in state. It must also return a Promise that resolves with the errors array.</p>
+<p>See the ReactoForm Form component's validate function for an example.</p>
+<h3 id="submit-required">submit() [REQUIRED]<a class="headerlink" href="#submit-required" title="Permanent link">&para;</a></h3>
+<p>This function must call the <code>validator</code> function and then potentially call the <code>onSubmit</code> function.</p>
+<p>The object to pass to both functions is the most recent object representing all the form values, which you should be tracking in state. A form object may not be passed to <code>onSubmit</code> unless it has first been passed to both <code>onChanging</code> and <code>onChange</code>.</p>
+<ol>
+<li>If <code>validator</code> prop isn't a function, exit.</li>
+<li>Call <code>validator</code> and expect it to return an array of error objects a Promise that resolves with an array of error objects.</li>
+<li>If <code>validator</code> rejects or throws, optionally log the error, and then exit.</li>
+<li>Store the errors array for passing down to child components.</li>
+<li>If the errors array is empty or (the errors array is non-empty and <code>shouldSubmitWhenInvalid</code> is <code>true</code>), call <code>onSubmit</code>.</li>
+<li>If <code>onSubmit</code> returns or resolves with <code>undefined</code>, <code>null</code>, or an object with property <code>ok</code> set to <code>true</code>, consider the submission successfully completed. Call the <code>resetValue</code> method, and then exit.</li>
+<li>If <code>onSubmit</code> returns or resolves with an object with property <code>ok</code> NOT set to <code>true</code>, consider the submission failed. If the result object also contains an <code>errors</code> property set to an errors array, store the errors array for passing down to child components. Exit without calling the <code>resetValue</code> method.</li>
+<li>If <code>onSubmit</code> rejects or throws, optionally log the error, and then exit. Do not call <code>resetValue</code> method.</li>
+</ol>
+<p>See the ReactoForm Form component's submit function for an example.</p>
+<h3 id="resetvalue-required">resetValue() [REQUIRED]<a class="headerlink" href="#resetvalue-required" title="Permanent link">&para;</a></h3>
+<p>This function must do the following:</p>
+<ul>
+<li>Reset the value state to match the value prop</li>
+<li>Clear all validation errors in state</li>
+<li>Call <code>element.resetValue()</code> on all descendant Inputs, Forms, and FormLists, down to exactly one level of nesting.</li>
+</ul>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Form.jsx">ReactoForm Form</a></p>

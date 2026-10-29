@@ -1,0 +1,42 @@
+<h1 id="field-component-specification">Field Component Specification<a class="headerlink" href="#field-component-specification" title="Permanent link">&para;</a></h1>
+<p>A block of components that are all related to a single piece of data. Typically a label, an input, help text, and an error message.</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<p>To comply with this spec, a Field type component must:</p>
+<ul>
+<li>expect one or more children, at least one of which must be an Input-type component. Children may also be descriptive text elements placed above or below the input, for example.</li>
+<li>render all the children with anything it wants around them (usually labels, margin, etc.)</li>
+<li>Accept content in the <code>label</code> property and render it somewhere</li>
+</ul>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>ALL properties are optional. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="label">label<a class="headerlink" href="#label" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.node
+</code></pre>
+<p>A label string or element to render. You may accept only strings if necessary.</p>
+<h3 id="errors">errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.shape({
+  message: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+}))
+</code></pre>
+<p>The containing form will supply this if you specify a value for the <code>name</code> property. You may, but do not have to, add classes or adjust styles based on the errors passed in here.</p>
+<h3 id="isrequired">isRequired<a class="headerlink" href="#isrequired" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>If a field has the ability to show an indication that it is required, it must determine requiredness from the <code>isRequired</code> property. Note that this is unrelated to actual validation; it is for display purposes only.</p>
+<h3 id="additional-properties">Additional Properties<a class="headerlink" href="#additional-properties" title="Permanent link">&para;</a></h3>
+<p>These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions:</p>
+<ul>
+<li><code>className</code> (string): For inputs that render HTML, to be used as the <code>class</code> attribute on the outermost element.</li>
+<li><code>labelClassName</code> (string): For inputs that render HTML, to be used as the <code>class</code> attribute on the label element.</li>
+<li><code>labelStyle</code> (object): For inputs that render HTML, to be used as the <code>style</code> attribute on the label element.</li>
+<li><code>labelFor</code> (string): For inputs that render HTML, to be used as the <code>for</code> attribute on the label element.</li>
+<li><code>style</code> (object): For inputs that render HTML, to be used as the <code>style</code> attribute on the outermost element.</li>
+</ul>
+<h2 id="static-properties">Static Properties<a class="headerlink" href="#static-properties" title="Permanent link">&para;</a></h2>
+<h3 id="defaultprops-optional">defaultProps [OPTIONAL]<a class="headerlink" href="#defaultprops-optional" title="Permanent link">&para;</a></h3>
+<p>Setting the <code>defaultProps</code> static property is recommended but not required.</p>
+<h3 id="isformfield-required">isFormField [REQUIRED]<a class="headerlink" href="#isformfield-required" title="Permanent link">&para;</a></h3>
+<p>Set this to <code>true</code> so that the containing form and other components know that your component implements the Field specification.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Field.jsx">ReactoForm Field</a></p>

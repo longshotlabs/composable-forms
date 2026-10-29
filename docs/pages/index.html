@@ -1,0 +1,38 @@
+<h1 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h1>
+<p>The Composable Form Specification defines a standard API contract among the components that make up a web form, specifically inputs, fields, lists, and forms. The benefit of a common, strict, and well-defined specification is that various authors can create discreet components that conform to the specification, and an app developer can then mix and match these components as necessary without any further markup or code changes.</p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Not tied to HTML, standard HTML <code>&lt;form&gt;</code> elements, or standard HTML form inputs</li>
+<li>Not tied to any particular UI framework</li>
+<li>Form inputs can be swapped out in seconds</li>
+<li>Forms can be nested within other forms and are themselves componentized</li>
+<li>As long as components implement the required API with the required logic, they are free to do anything else as they wish</li>
+<li>Client-side validation handlers are interchangable</li>
+<li>No dependencies on certain servers or databases</li>
+<li>Complexities are compartmentalized and abstracted away as much as possible. In particular, "input" type components are the easiest to make because the containing "form" type component handles most of the tricky logic.</li>
+</ul>
+<h2 id="why-its-useful">Why It's Useful<a class="headerlink" href="#why-its-useful" title="Permanent link">&para;</a></h2>
+<p>Say you are a developer who has been asked to create a Web form that collects business information. You make the following rough map of what you need:</p>
+<pre><code>Business Name (string)
+Contact Name (string)
+Location (object with latitude and longitude)
+Mailing Address (street1, street2, city, state/province, country, countryCode, postal code, attn, all strings)
+Hours (ordered list of day of week + hours, ability to add/remove)
+Email (string)
+Phone (string)
+Logo (upload, resulting in ID or URL string)
+</code></pre>
+<p>There is a lot to do here. You'll want some sort of map input for the latitude and longitude; a block of fields for the address, perhaps with address validation; a way of adding, removing, and editing the hours entries; image upload and validation; possibly some email or phone regular expression validation. These things are more easily accomplished by using readily available packages, so you decide to take a look at what's available.</p>
+<p>Now let's assume you're using React and you're specifically looking for React components. While you might be able to find what you need, it's unlikely that they all handle their data in the same way, some may look different from others and be tricky to style, and some might require a lot of custom hookup code, which you'd then need to redo if you decide to swap in a different component instead.</p>
+<p>Also, you'll have to write some custom logic for validating and displaying those validation errors to the user.</p>
+<p>Wouldn't it be nice if all the form components could work together seamlessly? What if you could even import the entire address entry form from a package and drop it into your main form without any extra work? And wouldn't it be great if validating and displaying validity was automatic?</p>
+<p>This is why we've created the Composable Form Specification.</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
+<p>This specification is maintained by <a href="http://dairystatedesigns.com/">Dairy State Designs</a> and open to modification requests from the community. The spec author is <a href="https://github.com/aldeed">Eric Dobbertin</a>, who created <a href="https://github.com/aldeed/meteor-autoform">AutoForm</a>, a widely used form package for <a href="https://www.meteor.com/">Meteor</a>/<a href="http://blazejs.org/">Blaze</a>.</p>
+<h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>
+<p>MIT</p>
+<h2 id="a-reference-implementation-for-react">A Reference Implementation for React<a class="headerlink" href="#a-reference-implementation-for-react" title="Permanent link">&para;</a></h2>
+<p>While this specification is intended to be generic, we are initially concentrating on React. Please try out our NPM package, <a href="{{root}}/reacto-form/">reacto-form</a>, and let us know what you think.</p>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
+<p>For developers who just want to learn enough about this specification to be able to use all form packages that implement it, have a look at the <a href="{{root}}/user/">user documentation</a>.</p>
+<p>For developers who want to create components that implement the specification, check out the <a href="{{root}}/spec/">actual specs</a>.</p>

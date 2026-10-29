@@ -1,0 +1,266 @@
+<h1 id="an-overview-for-users">An Overview For Users<a class="headerlink" href="#an-overview-for-users" title="Permanent link">&para;</a></h1>
+<p>This documentation is for developers who just want to learn enough about this specification to be able to use all form packages that implement it.</p>
+<p>If you are interested in creating a compatible package, you'll also want to read <a href="{{root}}/spec/">the full spec</a>.</p>
+<p>The Composable Form Specification is not tied to any framework or library, but we're going to use React for the code examples here.</p>
+<h2 id="the-form-type">The "Form" Type<a class="headerlink" href="#the-form-type" title="Permanent link">&para;</a></h2>
+<p>Not surprisingly, the core of the Composable Form Specification is the "Form" component. Any component exported by a package can be used as a "Form" component if it properly implements the specification.</p>
+<p>When using <a href="https://github.com/DairyStateDesigns/reacto-form">reacto-form</a>, code that uses a simple empty Form component looks something like this:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>Now let's pretend I decide I like the features of another "Form" component from a different package better. I update the code:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'other-form';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>Note that only one thing changed here: <code>reacto-form</code> package name became <code>other-form</code>. Because both components conform to the specification for a Form-type component, I can rely on my form to continue working without any further changes.</p>
+<p>(In reality, competing components may have other non-spec properties that differ, but the spec attempts to cover as many important properties as possible.)</p>
+<p>For additional user documentation, refer to the <a href="{{root}}/user/form/">Form Type Reference</a>.</p>
+<h2 id="the-input-type">The "Input" Type<a class="headerlink" href="#the-input-type" title="Permanent link">&para;</a></h2>
+<p>Anyway, let's add some inputs to our form.</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+        &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>Only the <code>name</code> property is required on inputs. An input can render pretty much anything (and it's not limited to HTML either, so, for example, React Native implementations are possible).</p>
+<p>Inputs can output a value of any data type, so you would have to read package documentation to know what the resulting value will be. In the example here, the values will be strings.</p>
+<p>For additional user documentation, refer to the <a href="{{root}}/user/input/">Input Type Reference</a>.</p>
+<h2 id="submission">Submission<a class="headerlink" href="#submission" title="Permanent link">&para;</a></h2>
+<p>We will now add a Submit button:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form ref={i =&gt; { this.form = i; }} onSubmit={mySubmissionFunction}&gt;
+        &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;button type=&quot;button&quot; onClick={() =&gt; { this.form.submit(); }}&gt;Submit&lt;/button&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>As per the specification, the Form component (regardless of which package provides it) will have a <code>submit()</code> instance method and will call the <code>onSubmit</code> function based on that.</p>
+<p>The <code>data</code> passed to <code>onSubmit</code> is an object created by combining all of the descendant values. In this case:</p>
+<pre><code class="language-js">{
+  firstName: 'John',
+  lastName: 'Candy',
+}
+</code></pre>
+<h2 id="object-path-notation">Object Path Notation<a class="headerlink" href="#object-path-notation" title="Permanent link">&para;</a></h2>
+<p>But you are not limited to simple key names for the <code>name</code> properties; you can use object path notation to provide any property accessor. These are parsed with <code>lodash.get</code> and <code>lodash.set</code>.</p>
+<p>For example:</p>
+<pre><code class="language-js">&lt;Input name=&quot;addresses[0].city&quot; type=&quot;text&quot; value=&quot;Anchorage&quot; /&gt;
+&lt;Input name=&quot;addresses[0].postalCode&quot; type=&quot;text&quot; value=&quot;99501&quot; /&gt;
+</code></pre>
+<p>Would result in a submission of:</p>
+<pre><code class="language-js">{
+  addresses: [
+    {
+      city: 'Anchorage',
+      postalCode: '99501',
+    },
+  ],
+}
+</code></pre>
+<p>NOTE: Numeric keys are not supported.</p>
+<h2 id="the-field-type">The "Field" Type<a class="headerlink" href="#the-field-type" title="Permanent link">&para;</a></h2>
+<p>In most cases, you'll want some additional stuff around your input: a label, error messages, descriptive text, a requiredness indicator, an icon, borders, padding. A Field-type component provides these things.</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+        &lt;Field label=&quot;First Name&quot;&gt;
+          &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;Field label=&quot;Last Name&quot;&gt;
+          &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>Field components don't have many requirements or restrictions. They can do pretty much anything they want as long as they render their children.</p>
+<p>For additional user documentation, refer to the <a href="{{root}}/user/field/">Field Type Reference</a>.</p>
+<h2 id="nesting-forms">Nesting Forms<a class="headerlink" href="#nesting-forms" title="Permanent link">&para;</a></h2>
+<p>A Form component is really just a group of inputs resulting in a single JavaScript object. As such, you can put forms within forms. Forms that have parent forms will track and gather their descendant input values just as top-level forms do, but they'll delegate validation and submission to the top-level form.</p>
+<p>A nested form must have a <code>name</code> property with an object path notation string like an input.</p>
+<p>A nesting example:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+        &lt;Field label=&quot;First Name&quot;&gt;
+          &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;Field label=&quot;Last Name&quot;&gt;
+          &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;h2&gt;Mailing Address&lt;/h2&gt;
+        &lt;Form name=&quot;addresses[0]&quot;&gt;
+          &lt;Field label=&quot;City&quot;&gt;
+            &lt;Input name=&quot;city&quot; type=&quot;text&quot; /&gt;
+          &lt;/Field&gt;
+          &lt;Field label=&quot;Postal Code&quot;&gt;
+            &lt;Input name=&quot;postalCode&quot; type=&quot;text&quot; /&gt;
+          &lt;/Field&gt;
+        &lt;/Form&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>Note that object path notation begins from the closest form, so the "city" input value is saved to the path <code>addresses[0].city</code> in the onSubmit data.</p>
+<p>Packages can choose to export entire premade forms as long as they conform the the specification for Form-type components. So for example, you might be able to plug in an open source address form component like this:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
+import AddressForm from 'nifty-address-form-package';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+        &lt;Field label=&quot;First Name&quot;&gt;
+          &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;Field label=&quot;Last Name&quot;&gt;
+          &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;h2&gt;Mailing Address&lt;/h2&gt;
+        &lt;AddressForm name=&quot;addresses.mailing&quot; /&gt;
+        &lt;h2&gt;Physical Address&lt;/h2&gt;
+        &lt;AddressForm name=&quot;addresses.physical&quot; /&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<h2 id="forms-vs-inputs">Forms vs Inputs<a class="headerlink" href="#forms-vs-inputs" title="Permanent link">&para;</a></h2>
+<p>You may have noticed that forms and inputs have many of the same properties. They are very similar, with the following differences:</p>
+<ul>
+<li>A form must handle validation and track validation errors</li>
+<li>A form must have a plain JavaScript object as its value. (An input CAN have a plain JavaScript object as its value, or any other data type.)</li>
+<li>A form must allow, be aware of, and pass data to other arbitrary components in its descendant tree (both those governed by this spec and those not)</li>
+<li>Generally a form is expected to contain fields while an input is expected to be contained by a field.</li>
+<li>An input will always be a descendant of a form while a form may or may not be a descendant of another form.</li>
+</ul>
+<h2 id="the-formlist-type">The "FormList" Type<a class="headerlink" href="#the-formlist-type" title="Permanent link">&para;</a></h2>
+<p>A FormList maps to an array in your data structure, that is, some arbitrary number of similar items that can be added, edited, and removed.</p>
+<p>When using a FormList, you include children that serve as the template for each item in the list. Among these children can be at most one ErrorsBlock and exactly one item data element, which is either an input (for an array of scalar data) or a form (for an array of objects).</p>
+<p>When using an ErrorsBlock as a child of FormList, omit the <code>names</code> property. When using an Input or Form as a child of FormList, omit the <code>name</code> property. These properties are added by FormList, which specifies the correct index for each item.</p>
+<p>Here is a twist on an earlier example, if we wanted to let a user enter any number of addresses:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form, FormList } from 'reacto-form';
+import { Field, Input } from 'reacto-form-inputs';
+import AddressForm from 'nifty-address-form-package';
+import mySubmissionFunction from './mySubmissionFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form onSubmit={mySubmissionFunction}&gt;
+        &lt;Field label=&quot;First Name&quot;&gt;
+          &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;Field label=&quot;Last Name&quot;&gt;
+          &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;/Field&gt;
+        &lt;h2&gt;Addresses&lt;/h2&gt;
+        &lt;FormList name=&quot;addresses&quot;&gt;
+          &lt;AddressForm /&gt;
+        &lt;/FormList&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>For additional user documentation, refer to the <a href="{{root}}/user/list/">FormList Type Reference</a>.</p>
+<h2 id="validation-and-displaying-errors">Validation and Displaying Errors<a class="headerlink" href="#validation-and-displaying-errors" title="Permanent link">&para;</a></h2>
+<p>The <code>Form</code> component handles validation automatically in the following ways:</p>
+<ul>
+<li>When the form data needs to be validated, it is passed to the function provided in the form's <code>validator</code> property. That function will return an array of error objects or a Promise that eventually resolves with an array of error objects.</li>
+<li>The error objects that are relevant to a certain component within the form are passed to it automatically, in the <code>errors</code> property. Relevancy is determined based on the <code>name</code> or <code>names</code> property of the component matching the <code>name</code> property of the error object.</li>
+</ul>
+<p>Fields, Inputs, FormLists, and child Forms can all use the <code>errors</code> passed in if necessary, for example to show indicators or change colors. But the most common case of using <code>errors</code> is with the <code>ErrorsBlock</code> component.</p>
+<p>An ErrorsBlock simply reads the <code>message</code> property of each error object passed in and displays all the messages to the user. The messages are assumed to be translated into the user's language by the validator function.</p>
+<p>For additional user documentation, refer to the <a href="{{root}}/user/errors/">ErrorsBlock Reference</a> and <a href="{{root}}/user/validation/">Validator Reference</a>.</p>
+<h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
+<h3 id="customizing-components">Customizing Components<a class="headerlink" href="#customizing-components" title="Permanent link">&para;</a></h3>
+<p>You'll often want to apply certain styles, classes, or other props to all instances of certain form components using anywhere in your app. A good pattern for this is to import from the form packages in a single file, change the <code>defaultProps</code> on the components, and then export them. Everywhere you need them throughout your app, you can then import from this file rather than directly from the form packages.</p>
+<p>Here's an example of using this pattern to apply Bootstrap classes to ReactoForm components:</p>
+<pre><code class="language-js">import { Form, FormList } from 'reacto-form';
+import { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Input, SelectCheckboxInput } from 'reacto-form-inputs';
+import moment from 'moment-timezone';
+
+BooleanCheckboxInput.defaultProps.className = 'checkbox';
+DateTimeInput.defaultProps = {
+  ...DateTimeInput.defaultProps,
+  dayInputClassName: 'form-control',
+  meridiemSelectClassName: 'form-control',
+  moment,
+  monthSelectClassName: 'form-control',
+  timeInputClassName: 'form-control',
+  yearInputClassName: 'form-control',
+};
+ErrorsBlock.defaultProps.className = 'help-block';
+Field.defaultProps.className = 'form-group';
+Field.defaultProps.labelClassName = 'control-label';
+FormList.defaultProps.buttonClassName = 'btn btn-primary';
+Input.defaultProps.className = 'form-control';
+SelectCheckboxInput.defaultProps = {
+  ...SelectCheckboxInput.defaultProps,
+  checkboxClassName: 'form-check-input',
+  labelClassName: 'form-check-label',
+  itemClassName: 'form-check',
+};
+
+export { BooleanCheckboxInput, DateTimeInput, ErrorsBlock, Field, Form, FormList, Input, SelectCheckboxInput };
+</code></pre>

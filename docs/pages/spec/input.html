@@ -1,0 +1,102 @@
+<h1 id="input-component-specification">Input Component Specification<a class="headerlink" href="#input-component-specification" title="Permanent link">&para;</a></h1>
+<p>A component that displays and collects data. An input results in any JavaScript data type.</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<p>Because the closest <code>Form</code> type component does much of the heavy work, creating your own <code>Input</code> type component is not difficult.</p>
+<h3 id="an-input-must-requirements">An Input MUST (Requirements)<a class="headerlink" href="#an-input-must-requirements" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Have a static class property named <code>isFormInput</code> that is set to <code>true</code></li>
+<li>Take a prop named <code>value</code> and render it for the user to see.</li>
+<li>Call <code>onChanging</code> (if it supports an <code>onChanging</code> prop) AND <code>onChange</code>, in that order, on mount. Pass them the incoming <code>value</code> prop value.</li>
+<li>If the user edits the value and you believe that their editing is done for now, update your internal value state and then call <code>onChanging</code> (if it supports an <code>onChanging</code> prop) AND <code>onChange</code>, in that order, passing them the new value.</li>
+<li>When the <code>value</code> prop changes and doesn't match the current shown value, update the shown value to the value from the incoming <code>value</code> prop.</li>
+<li>May not have a default value for the <code>value</code> or <code>errors</code> props.</li>
+</ul>
+<h3 id="an-input-should-recommendations">An Input SHOULD (Recommendations)<a class="headerlink" href="#an-input-should-recommendations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If the <code>isReadOnly</code> prop is falsy, allow editing the value in some way. If you want your component to always be read only, you do not have to provide any way to edit and you can ignore the <code>isReadOnly</code> prop. Make sure to document this.</li>
+<li>Document the expected data type of your <code>value</code>, and throw errors whenever the data type is incorrect.</li>
+<li>Visually, do not include any margin (no whitespace above, below, or to either side of your component). Exceptions can be made, but know that fields and forms in general will expect no margin.</li>
+</ul>
+<h3 id="an-input-may-as-necessary">An Input MAY (As Necessary)<a class="headerlink" href="#an-input-may-as-necessary" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Keep internal state</li>
+<li>If the user edits the value and you believe that their editing is in progress, update your internal value state and then call <code>onChanging</code>, passing it the new value.</li>
+<li>Accept an <code>onSubmit</code> property and call the passed function if the user does something that makes you think they want to submit the form (for example, presses Enter).</li>
+<li>Show an indication or alter styles when the <code>isRequired</code> property is <code>true</code></li>
+<li>Show an indication or alter styles when the <code>errors</code> property is a non-empty array (error styling)</li>
+<li>Show an indication or alter styles when the <code>errors</code> property is an empty array and the <code>hasBeenValidated</code> property is <code>true</code> (success styling)</li>
+</ul>
+<h2 id="additional-properties">Additional Properties<a class="headerlink" href="#additional-properties" title="Permanent link">&para;</a></h2>
+<p>These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions if you support these features:</p>
+<ul>
+<li><code>className</code> (string): For inputs that render HTML, to be used as the <code>className</code> prop on the outermost element.</li>
+<li><code>maxLength</code> (integer): For inputs that support limiting the number of characters the user can type.</li>
+<li><code>placeholder</code> (string): For inputs that show placeholder text when blank</li>
+<li><code>style</code> (object): For inputs that render HTML, to be used as the <code>style</code> prop on the outermost element.</li>
+</ul>
+<h2 id="static-properties">Static Properties<a class="headerlink" href="#static-properties" title="Permanent link">&para;</a></h2>
+<h3 id="defaultprops-optional">defaultProps [OPTIONAL]<a class="headerlink" href="#defaultprops-optional" title="Permanent link">&para;</a></h3>
+<p>Setting the <code>defaultProps</code> static property is recommended but not required.</p>
+<h3 id="isforminput-required">isFormInput [REQUIRED]<a class="headerlink" href="#isforminput-required" title="Permanent link">&para;</a></h3>
+<p>Set this to <code>true</code> so that the containing form and other components know that your component implements the Input specification.</p>
+<h2 id="instance-methods">Instance Methods<a class="headerlink" href="#instance-methods" title="Permanent link">&para;</a></h2>
+<p>These instance methods are optional for inputs, but you should use these names for them if you support these functions. Also, if you provide one of them, you should provide all four.</p>
+<h3 id="isdirty-optional">isDirty() [OPTIONAL]<a class="headerlink" href="#isdirty-optional" title="Permanent link">&para;</a></h3>
+<p>Returns a boolean indicating whether anything has been entered/changed by the user or by a call to the <code>setValue</code> instance method.</p>
+<h3 id="getvalue-optional">getValue() [OPTIONAL]<a class="headerlink" href="#getvalue-optional" title="Permanent link">&para;</a></h3>
+<p>Returns the current value the input is showing</p>
+<h3 id="resetvalue-optional">resetValue() [OPTIONAL]<a class="headerlink" href="#resetvalue-optional" title="Permanent link">&para;</a></h3>
+<p>Update the shown value to match the value prop, erasing any user changes</p>
+<h3 id="setvaluevalue-optional">setValue(value) [OPTIONAL]<a class="headerlink" href="#setvaluevalue-optional" title="Permanent link">&para;</a></h3>
+<p>Update the value state to be the provided value. This is similar to passing a new value to the <code>value</code> prop except that <code>isDirty()</code> will return true after setting it this way if the set value doesn't match the prop value, so this is the best way to simulate the user having entered/chosen a value.</p>
+<h2 id="additional-specs">Additional Specs<a class="headerlink" href="#additional-specs" title="Permanent link">&para;</a></h2>
+<p>Depending on what an input value's data type is and other factors, there are additional rules and recommendations to follow. These help ensure that it it easy to swap one input for another that is similar.</p>
+<h3 id="inputs-with-string-value">Inputs With String Value<a class="headerlink" href="#inputs-with-string-value" title="Permanent link">&para;</a></h3>
+<p>Must accept an optional boolean property <code>convertEmptyStringToNull</code>, which if <code>true</code> should always call <code>onChange</code> and <code>onChanging</code> with <code>null</code> rather than <code>""</code>. The default value for this property can be either <code>true</code> or <code>false</code>, as the component author prefers. This feature is useful for some validation libraries where an empty string does not result in a "required" error, or to avoid storing empty strings in your database.</p>
+<p>Must accept an optional boolean property <code>trimValue</code>, which if <code>true</code> should always call <code>onChange</code> and <code>onChanging</code> with a string that has no whitespace at the beginning or end. The default value for this property can be either <code>true</code> or <code>false</code>, as the component author prefers.</p>
+<p>If both <code>trimValue</code> and <code>convertEmptyStringToNull</code> are <code>true</code>, the component should first trim, and then convert to null.</p>
+<h3 id="inputs-with-date-value">Inputs With Date Value<a class="headerlink" href="#inputs-with-date-value" title="Permanent link">&para;</a></h3>
+<p>Must accept an optional string property <code>timezone</code> that will be set to the IANA timezone string that should be used to interpret the user-entered time, and/or an optional <code>offset</code> string property that will be set to the offset string, e.g. "+00:00". If neither are supplied, the timezone/offset of the local machine should be assumed.</p>
+<p>May accept <code>max</code> and <code>min</code> properties that will be set to a Date object representing the earliest and latest times that may be selected.</p>
+<p>NOTE: Inputs with <code>Date</code> values should be limited to inputs that are intended to have the user select an exact moment in time, such as an appointment start time. If an input has the user choose only a date and not a time, or only a time and not a date, or a date and time that are intended to be relative, then it's best to have the data type be a string, a number, or an object, to which you can apply a timezone later when displaying it.</p>
+<h3 id="selection-inputs">Selection Inputs<a class="headerlink" href="#selection-inputs" title="Permanent link">&para;</a></h3>
+<p>Inputs that show multiple values to the user and allow selection must get those options from a property called <code>options</code>. The component should expect options in one of two valid formats:</p>
+<pre><code class="language-js">[
+  { label: '2013', value: 2013 },
+  { label: '2014', value: 2014 },
+  { label: '2015', value: 2015 },
+]
+</code></pre>
+<p>or</p>
+<pre><code class="language-js">[
+  {
+    optgroup: 'Fun Years',
+    options: [
+      { label: '2013', value: 2013 },
+      { label: '2014', value: 2014 },
+      { label: '2015', value: 2015 },
+    ]
+  },
+  {
+    optgroup: &quot;Boring Years&quot;,
+    options: [
+      { label: '2016', value: 2016 },
+      { label: '2017', value: 2017 },
+      { label: '2018', value: 2018 },
+    ]
+  }
+]
+</code></pre>
+<p>Components can choose not to support the <code>optgroup</code> format if it doesn't make sense.</p>
+<p>The value is a number in these examples but could be a string, a boolean, a Date, or anything. A selection input can limit the data types it supports for values.</p>
+<p>Selection input UI can be anything, for example, toggle buttons, check boxes, a dropdown list, etc.</p>
+<p>In addition to <code>label</code> and <code>value</code>, which are required, <code>id</code> can be added if any values are duplicated. <code>id</code> should be used for array tracking (e.g., <code>key</code> prop in React) if supplied, otherwise use <code>value</code>.</p>
+<p>Dropdown-type selection inputs must add a first option that is shown when the value is empty (undefined, null, empty string, etc.). Allow the user to set the label for this option using a string property called <code>emptyLabel</code>.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/Input.jsx">ReactoForm Input</a></p>
+<h2 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
+<h3 id="why-is-isreadonly-prop-supported-but-not-isdisabled">Why is <code>isReadOnly</code> prop supported but not <code>isDisabled</code>?<a class="headerlink" href="#why-is-isreadonly-prop-supported-but-not-isdisabled" title="Permanent link">&para;</a></h3>
+<p>In HTML, the form <code>input</code> element has both a <code>readonly</code> attribute and a <code>disabled</code> attribute. They are subtly different. The primary difference is that values from disabled inputs are not included when you serialize an HTML form. Also, disabled inputs do not receive focus and cannot be tabbed to. Read-only inputs, on the other hand, can be tabbed to, can receive focus, and are included in the serialized form values.</p>
+<p>These distinctions do not really matter when doing forms this way, so we include only a single prop, <code>isReadOnly</code>. We use this rather than <code>isDisabled</code> because it is a clearer description. If you create an input component that ultimately renders an HTML input, you may choose to map <code>isReadOnly</code> to either HTML attribute. You can also add <code>isDisabled</code> if you really need to.</p>
+<h2 id="testing-your-component">Testing Your Component<a class="headerlink" href="#testing-your-component" title="Permanent link">&para;</a></h2>
+<p>To add tests that help ensure your input properly implements the spec, use the <a href="https://github.com/DairyStateDesigns/composable-form-tests">composable-form-tests</a> package.</p>

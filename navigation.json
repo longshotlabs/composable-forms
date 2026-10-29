@@ -1,0 +1,80 @@
+[
+  [
+    "Home",
+    "index"
+  ],
+  [
+    "User Docs",
+    [
+      [
+        "Overview",
+        "user"
+      ],
+      [
+        "Form Component Reference",
+        "user/form"
+      ],
+      [
+        "Input Component Reference",
+        "user/input"
+      ],
+      [
+        "Field Component Reference",
+        "user/field"
+      ],
+      [
+        "FormList Component Reference",
+        "user/list"
+      ],
+      [
+        "ErrorsBlock Component Reference",
+        "user/errors"
+      ],
+      [
+        "Validator Reference",
+        "user/validation"
+      ]
+    ]
+  ],
+  [
+    "Spec",
+    [
+      [
+        "Overview",
+        "spec"
+      ],
+      [
+        "Form Component Specification",
+        "spec/form"
+      ],
+      [
+        "Input Component Specification",
+        "spec/input"
+      ],
+      [
+        "Field Component Specification",
+        "spec/field"
+      ],
+      [
+        "FormList Component Specification",
+        "spec/list"
+      ],
+      [
+        "ErrorsBlock Component Specification",
+        "spec/errors"
+      ],
+      [
+        "Validator Specification",
+        "spec/validation"
+      ]
+    ]
+  ],
+  [
+    "ReactoForm",
+    "reacto-form"
+  ],
+  [
+    "Packages",
+    "packages"
+  ]
+]

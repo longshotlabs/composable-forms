@@ -1,0 +1,40 @@
+<h1 id="formlist-component-reference">FormList Component Reference<a class="headerlink" href="#formlist-component-reference" title="Permanent link">&para;</a></h1>
+<p>A fixed or dynamic list of inputs or forms. A FormList results in a JavaScript array.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>A FormList wraps the following:</p>
+<ul>
+<li>Exactly one child that is an input OR exactly one child that is a form</li>
+<li>At most one ErrorsBlock child</li>
+<li>Any number of additional child elements that are not part of the form spec, such as help text to show above or below every item</li>
+</ul>
+<p>The contents of a FormList element act as a template for each item in the list. The child form or input must not have the <code>name</code> property, and the child ErrorsBlock must not have the <code>names</code> property. The parent FormList will figure these out and add them.</p>
+<p>A FormList will render as many items as necessary to display the current data, as well as "add" and "remove" buttons or some interface for adding and removing items.</p>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>Only the <code>name</code> property is required. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="name">name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.string
+</code></pre>
+<p>Set this to the desired object path where the value should be stored, using object path notation.</p>
+<h3 id="onchanging">onChanging<a class="headerlink" href="#onchanging" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>This function will be called as the FormList array changes, for example while a user is typing in one of the inputs. This is called more frequently than <code>onChange</code> but not necessarily on every single character change.</p>
+<p>This may also be called on initial render to update default and hard coded input values.</p>
+<h3 id="onchange">onChange<a class="headerlink" href="#onchange" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>This function will be called after the FormList array changes, whenever the user appears to be done changing one of the inputs, for example, after a user finishes typing and tabs off the field. It is also called as items are added or removed from the array. This is called less frequently than <code>onChanging</code>.</p>
+<p>This may also be called on initial render to update default and hard coded input values.</p>
+<h3 id="mincount">minCount<a class="headerlink" href="#mincount" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.number
+</code></pre>
+<p>Set this to the minimum number of items that must be in the list and shown in the UI. If <code>minCount</code> and <code>maxCount</code> are set to the same number, this would hide "add" and "remove" buttons and disable the ability for the user to change the number of items in the array.</p>
+<h3 id="maxcount">maxCount<a class="headerlink" href="#maxcount" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.number
+</code></pre>
+<p>Set this to the maximum number of items that can be in the list and shown in the UI. If <code>minCount</code> and <code>maxCount</code> are set to the same number, this would hide "add" and "remove" buttons and disable the ability for the user to change the number of items in the array.</p>
+<h2 id="instance-properties">Instance Properties<a class="headerlink" href="#instance-properties" title="Permanent link">&para;</a></h2>
+<h3 id="getvalue">getValue()<a class="headerlink" href="#getvalue" title="Permanent link">&para;</a></h3>
+<p>Returns the current array value of the list in state</p>
+<h3 id="resetvalue">resetValue()<a class="headerlink" href="#resetvalue" title="Permanent link">&para;</a></h3>
+<p>Forces a reset of the value state to match the value prop</p>

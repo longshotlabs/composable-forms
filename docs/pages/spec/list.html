@@ -1,0 +1,12 @@
+<h1 id="formlist-component-specification">FormList Component Specification<a class="headerlink" href="#formlist-component-specification" title="Permanent link">&para;</a></h1>
+<p>A dynamic list of inputs or forms. A FormList results in a JavaScript array.</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<p>A FormList is probably the most complicated component type to create. The only requirements are to use the <code>value</code> array to render the proper number of child components, allowing the user to add and remove items. In doing so, you must clone the children and pass them properties as necessary to be able to track the array value state.</p>
+<p>It's best to start with the FormList component from ReactoForm and make modifications until it meets your needs.</p>
+<h2 id="static-properties">Static Properties<a class="headerlink" href="#static-properties" title="Permanent link">&para;</a></h2>
+<h3 id="defaultprops-optional">defaultProps [OPTIONAL]<a class="headerlink" href="#defaultprops-optional" title="Permanent link">&para;</a></h3>
+<p>Setting the <code>defaultProps</code> static property is recommended but not required.</p>
+<h3 id="isformlist-required">isFormList [REQUIRED]<a class="headerlink" href="#isformlist-required" title="Permanent link">&para;</a></h3>
+<p>Set this to <code>true</code> so that the containing form and other components know that your component implements the FormList specification.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/DairyStateDesigns/reacto-form/blob/master/lib/components/FormList.jsx">ReactoForm FormList</a></p>

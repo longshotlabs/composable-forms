@@ -1,0 +1,105 @@
+<h1 id="input-component-reference">Input Component Reference<a class="headerlink" href="#input-component-reference" title="Permanent link">&para;</a></h1>
+<p>A component that actually displays and collects data. An input results in a collected value of any JavaScript data type.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>An input component may render pretty much anything that displays and/or allows editing of data. Each input package's documentation should explain what it looks like and how a user interacts with it.</p>
+<p>To use an input component, you just have to put it within a Form or FormList (potentially surrounded by a Field if needed), and supply a <code>name</code> for it, which is a string that identifies the object path at which the input's value can be retrieved and stored.</p>
+<p>React JSX example:</p>
+<pre><code class="language-js">&lt;Form&gt;
+  &lt;Input type=&quot;text&quot; name=&quot;title&quot; placeholder=&quot;Title&quot; /&gt;
+  &lt;Input type=&quot;text&quot; name=&quot;author.firstName&quot; placeholder=&quot;Author First Name&quot; /&gt;
+  &lt;Input type=&quot;text&quot; name=&quot;author.lastName&quot; placeholder=&quot;Author Last Name&quot; /&gt;
+&lt;/Form&gt;
+</code></pre>
+<p>Or with fields:</p>
+<pre><code class="language-js">&lt;Form&gt;
+  &lt;Field name=&quot;title&quot; label=&quot;Title&quot;&gt;
+    &lt;Input type=&quot;text&quot; name=&quot;title&quot; /&gt;
+  &lt;/Field&gt;
+  &lt;Field name=&quot;title&quot; label=&quot;Title&quot;&gt;
+    &lt;Input type=&quot;text&quot; name=&quot;author.firstName&quot; placeholder=&quot;Author First Name&quot; /&gt;
+  &lt;/Field&gt;
+  &lt;Field name=&quot;title&quot; label=&quot;Title&quot;&gt;
+    &lt;Input type=&quot;text&quot; name=&quot;author.lastName&quot; placeholder=&quot;Author Last Name&quot; /&gt;
+  &lt;/Field&gt;
+&lt;/Form&gt;
+</code></pre>
+<p>Don't think of inputs as being exactly like the <code>&lt;input&gt;</code> element in HTML. An input may be that, but it also may be a select box, a group of check boxes or radios, a canvas the user can draw on, a map, or anything else you can imagine. If it can display a value and allow the user to edit it somehow, it can satisfy the Input specification.</p>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>All properties are optional. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="name">name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.string
+</code></pre>
+<p>Set this to the desired object path where the value should be stored, using object path notation.</p>
+<h3 id="value">value<a class="headerlink" href="#value" title="Permanent link">&para;</a></h3>
+<p>If necessary, provide a default input value here. Typically you do not need to do this but instead you would set the top-level Form's <code>value</code> property to the current object (for an update form) or a default object (for a create form).</p>
+<h3 id="onchanging">onChanging<a class="headerlink" href="#onchanging" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>As the input value changes, the input component will call <code>onChanging(newValue)</code>, where <code>newValue</code> is the new value after the most recent user entry. For example, this may be called as a user types or as they move a pointing device or range slider.</p>
+<p>Calls to <code>onChanging</code> may be throttled as necessary by the input. Thus, you should never expect that every single value change is passed to <code>onChanging</code>. For example, a throttled text input may call <code>onChanging</code> on every typed letter for a slow typer, but call only every third typed letter for a fast typer.</p>
+<h3 id="onchange">onChange<a class="headerlink" href="#onchange" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>After the input value changes, the input component will call <code>onChange(newValue)</code>, where <code>newValue</code> is the new value after the most recent user entry. For example, a text entry input may call <code>onChanging</code> repeatedly while a user types, and then call <code>onChange</code> after they stop typing for a bit, or after they click, tap, or tab off the field.</p>
+<h3 id="isrequired">isRequired<a class="headerlink" href="#isrequired" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>Some implementations of <code>Input</code> may show a requiredness indicator if you pass <code>true</code> here. This is not used for validation; it is for display only.</p>
+<h3 id="isreadonly">isReadOnly<a class="headerlink" href="#isreadonly" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>Pass <code>true</code> to make the input visually appear disabled and not respond to user input. Note that the HTML spec distinguishes between "readonly" and "disabled" for inputs, where "disabled" inputs are not included upon form submission. This specification includes no such distinction, and all input values are included in the form object.</p>
+<h3 id="additional-properties">Additional Properties<a class="headerlink" href="#additional-properties" title="Permanent link">&para;</a></h3>
+<p>These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions:</p>
+<ul>
+<li><code>className</code> (string): For inputs that render HTML, to be used as the <code>className</code> prop on the outermost element.</li>
+<li><code>maxLength</code> (integer): For inputs that support limiting the number of characters the user can type.</li>
+<li><code>placeholder</code> (string): For inputs that show placeholder text when blank</li>
+<li><code>style</code> (object): For inputs that render HTML, to be used as the <code>style</code> prop on the outermost element.</li>
+</ul>
+<h2 id="instance-properties">Instance Properties<a class="headerlink" href="#instance-properties" title="Permanent link">&para;</a></h2>
+<p>These instance methods are optional. A particular input may have chosen not to support them, but inputs that do support them will use these names for them.</p>
+<h3 id="isdirty">isDirty()<a class="headerlink" href="#isdirty" title="Permanent link">&para;</a></h3>
+<p>Returns a boolean indicating whether anything has been entered/changed by the user.</p>
+<h3 id="getvalue">getValue()<a class="headerlink" href="#getvalue" title="Permanent link">&para;</a></h3>
+<p>Returns the current value of the input in state</p>
+<h3 id="resetvalue">resetValue()<a class="headerlink" href="#resetvalue" title="Permanent link">&para;</a></h3>
+<p>Forces a reset of the value state to match the value prop</p>
+<h3 id="setvaluevalue">setValue(value)<a class="headerlink" href="#setvaluevalue" title="Permanent link">&para;</a></h3>
+<p>Update the value state to be the provided value. This is similar to passing a new value to the <code>value</code> prop except that <code>isDirty()</code> will return true after setting it this way if the set value doesn't match the prop value, so this is the best way to simulate the user having entered/chosen a value.</p>
+<h2 id="more-details-by-type">More Details By Type<a class="headerlink" href="#more-details-by-type" title="Permanent link">&para;</a></h2>
+<h3 id="date-inputs">Date Inputs<a class="headerlink" href="#date-inputs" title="Permanent link">&para;</a></h3>
+<p>Inputs that have a <code>Date</code> instance as their value accept an optional string property <code>timezone</code> that you can set to the IANA timezone string that should be used to interpret the user-entered time, and/or an optional <code>offset</code> string property that you can set to the offset string, e.g. "+00:00". If neither are supplied, the timezone/offset of the local machine is used.</p>
+<p>Some may accept <code>max</code> and <code>min</code> properties that will be set to a <code>Date</code> object representing the earliest and latest times that may be selected.</p>
+<h3 id="selection-inputs">Selection Inputs<a class="headerlink" href="#selection-inputs" title="Permanent link">&para;</a></h3>
+<p>Inputs that show multiple values to the user and allow selection get those options from a property called <code>options</code>. All such components expect options in one of two valid formats:</p>
+<pre><code class="language-js">[
+  { label: '2013', value: 2013 },
+  { label: '2014', value: 2014 },
+  { label: '2015', value: 2015 },
+]
+</code></pre>
+<p>or</p>
+<pre><code class="language-js">[
+  {
+    optgroup: 'Fun Years',
+    options: [
+      { label: '2013', value: 2013 },
+      { label: '2014', value: 2014 },
+      { label: '2015', value: 2015 },
+    ]
+  },
+  {
+    optgroup: &quot;Boring Years&quot;,
+    options: [
+      { label: '2016', value: 2016 },
+      { label: '2017', value: 2017 },
+      { label: '2018', value: 2018 },
+    ]
+  }
+]
+</code></pre>
+<p>Components can choose not to support the <code>optgroup</code> format if it doesn't make sense.</p>
+<p>The value is a number in these examples but could be a string, a boolean, a Date, or anything. A selection input can limit the data types it supports for values. Refer to the input package's documentation.</p>
+<p>In addition to <code>label</code> and <code>value</code>, which are required, <code>id</code> can be added if any values are duplicated. <code>id</code> is used for array tracking (e.g., <code>key</code> prop in React) if supplied; otherwise <code>value</code> is used.</p>
+<p>Dropdown-type selection inputs will add a first option that is shown when the value is empty (undefined, null, empty string, etc.). You can define the label for this option using a string property called <code>emptyLabel</code>.</p>

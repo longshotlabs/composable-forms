@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}} - Composable Form Specification</title>
+  <link rel="icon" href="{{root}}/assets/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&amp;family=Open+Sans:300,400,400italic,600,700,700italic&amp;display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+  <link rel="stylesheet" href="{{root}}/assets/site.css">
+  <script type="module" src="{{root}}/assets/site.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="navbar">
+    <nav class="container" aria-label="Main navigation">
+      <a class="brand" href="{{root}}/">Composable Form Specification</a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="navigation" aria-label="Toggle navigation">☰</button>
+      <div id="navigation">
+        <div class="primary-nav">{{nav}}</div>
+        <div class="utility-nav">
+          <button class="search-toggle">⌕ Search</button>
+          {{previous}}
+          {{next}}
+          <a href="https://github.com/DairyStateDesigns/composable-forms">Edit docs on GitHub</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container layout">
+    <aside aria-label="On this page">
+      <div class="sidebar">
+        <ul>{{toc}}</ul>
+      </div>
+    </aside>
+    <main id="content">{{content}}</main>
+  </div>
+  <footer><hr><small>© 2017-2020 <a href="http://dairystatedesigns.com" target="_blank" rel="noopener">Dairy State Designs</a><br>Composable Form Specification</small></footer>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-header"><h4 id="search-title">Search</h4><button class="close-search" aria-label="Close search">×</button></div>
+    <div class="dialog-body">
+      <p>From here you can search these documents. Enter your search terms below.</p>
+      <label class="sr-only" for="search-query">Search documentation</label>
+      <input id="search-query" type="search" placeholder="Search..." autocomplete="off">
+      <div id="search-results" aria-live="polite"></div>
+    </div>
+  </dialog>
+</body>
+</html>

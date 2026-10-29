@@ -1,0 +1,100 @@
+<h1 id="form-component-reference">Form Component Reference<a class="headerlink" href="#form-component-reference" title="Permanent link">&para;</a></h1>
+<p>A group of one or more fields, inputs, lists, or other forms. A form results in a JavaScript object.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>To use a Form type component, render it with nested children based on what you want the form to look like. The components within the form dictate the resulting data structure. Inputs typically result in scalar values, while Forms map to objects and FormLists map to arrays. Through nesting these various things you can create any schema. This usually works great, but if your design requires a different layout, you can always adjust the resulting object before validating or submitting it.</p>
+<p>React JSX example:</p>
+<pre><code class="language-js">import React, { Component } from 'react';
+import { Form } from 'reacto-form';
+import { Input } from 'reacto-form-inputs';
+import mySubmissionFunction from './mySubmissionFunction';
+import myValidationFunction from './myValidationFunction';
+
+class SomePage extends Component {
+  render() {
+    return (
+      &lt;Form ref={i =&gt; { this.form = i; }} onSubmit={mySubmissionFunction} validator={myValidationFunction}&gt;
+        &lt;Input name=&quot;firstName&quot; type=&quot;text&quot; /&gt;
+        &lt;Input name=&quot;lastName&quot; type=&quot;text&quot; /&gt;
+        &lt;button type=&quot;button&quot; onClick={() =&gt; { this.form.submit(); }}&gt;Submit&lt;/button&gt;
+      &lt;/Form&gt;
+    );
+  }
+}
+</code></pre>
+<p>There are typically only three things you need to do:</p>
+<ul>
+<li>Pass a validator function to the <code>validator</code> property</li>
+<li>Pass a submission function to the <code>onSubmit</code> property</li>
+<li>Call <code>form.submit()</code> on the form instance when you want to submit it</li>
+</ul>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>ALL properties are optional, but the <code>name</code> property is required on forms that are nested under other forms. The properties listed here are governed by the specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="errors">errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.shape({
+  message: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+}))
+</code></pre>
+<p>Array of error objects for all inputs on this form. It is usually not necessary to pass these errors yourself because the Form component will track them based on calls to <code>validator</code>, or they will be passed down by a parent Form or FormList. But you might want to pass them in directly when developing or testing.</p>
+<h3 id="name">name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.string
+</code></pre>
+<p>If using a Form within another Form, set this to the desired object path where the value should be stored.</p>
+<pre><code class="language-js">&lt;Form&gt;
+  &lt;Input name=&quot;nickname&quot; type=&quot;text&quot; /&gt;
+  &lt;Form name=&quot;address&quot;&gt;
+    ...
+  &lt;/Form&gt;
+&lt;/Form&gt;
+</code></pre>
+<h3 id="onchanging">onChanging<a class="headerlink" href="#onchanging" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>This function will be called as the form object changes, for example while a user is typing in one of the inputs. This is called more frequently than <code>onChange</code> but not necessarily on every single character change.</p>
+<p>This may also be called on initial render to update default and hard coded input values.</p>
+<h3 id="onchange">onChange<a class="headerlink" href="#onchange" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>This function will be called after the form object changes, whenever the user appears to be done changing one of the inputs, for example, after a user finishes typing and tabs off the field. This is called less frequently than <code>onChanging</code>.</p>
+<p>This may also be called on initial render to update default and hard coded input values.</p>
+<h3 id="onsubmit">onSubmit<a class="headerlink" href="#onsubmit" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>Provide a function that returns a Promise.</p>
+<ul>
+<li>If successfully submitted, return <code>undefined</code>, <code>null</code>, or <code>{ ok: true }</code>.</li>
+<li>If submission failed, and you have additional validation errors that you want shown, return <code>{ ok: false, errors }</code>, where <code>errors</code> is the standard errors array.</li>
+<li>If submission failed and you've already notified the user in the user interface, you can return <code>{ ok: false }</code> or reject, whichever is most convenient.</li>
+</ul>
+<p>When you return <code>undefined</code>, <code>null</code>, or <code>{ ok: true }</code>, the Form component will reset all input values to match the values in the object in the Form's <code>value</code> property (by calling <code>form.resetValue()</code>).</p>
+<h3 id="value">value<a class="headerlink" href="#value" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.obj
+</code></pre>
+<p>If the form is editing an existing object, provide it here. You can also provide an object with default values for a creation form. This is a basic JavaScript object which must match the structure of the object that the form component builds and passes to <code>onChanging</code>, <code>onChange</code>, and <code>onSubmit</code>.</p>
+<h3 id="validateon">validateOn<a class="headerlink" href="#validateon" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.oneOf(['changing', 'changed', 'submit'])
+</code></pre>
+<p>This determines which event will run the <code>validator</code> function initially, after first mount or after <code>resetValue</code> has been called. The default is "submit". To skip validation, simply do not provide a <code>validator</code> function.</p>
+<h3 id="revalidateon">revalidateOn<a class="headerlink" href="#revalidateon" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.oneOf(['changing', 'changed', 'submit'])
+</code></pre>
+<p>This determines how often the form will run the <code>validator</code> function after the initial validation is triggered based on <code>validateOn</code>, and until the form is reset by calling <code>resetValue</code> (which is also a side effect of a successful <code>onSubmit</code> call). The default is "changing". To skip validation, simply do not provide a <code>validator</code> function.</p>
+<h3 id="validator">validator<a class="headerlink" href="#validator" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.func
+</code></pre>
+<p>If you want to use the built-in validation and error message handling, provide a validator function. This is a function that accepts a single argument that is the object to be validated and returns a Promise that resolves with a potentially empty errors array (see the <code>errors</code> property and <code>validator</code> spec).</p>
+<h3 id="hasbeenvalidated">hasBeenValidated<a class="headerlink" href="#hasbeenvalidated" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>This is set by parent forms when they are handling the validation for a child form.</p>
+<h2 id="instance-properties">Instance Properties<a class="headerlink" href="#instance-properties" title="Permanent link">&para;</a></h2>
+<h3 id="isdirty">isDirty()<a class="headerlink" href="#isdirty" title="Permanent link">&para;</a></h3>
+<p>Returns a boolean indicating whether anything has been entered/changed by the user.</p>
+<h3 id="getvalue">getValue()<a class="headerlink" href="#getvalue" title="Permanent link">&para;</a></h3>
+<p>Returns the current value of the form in state</p>
+<h3 id="validate">validate()<a class="headerlink" href="#validate" title="Permanent link">&para;</a></h3>
+<p>Calls the <code>validator</code> function and then updates the errors tracked in state. Return a Promise that resolves with the errors array.</p>
+<h3 id="submit">submit()<a class="headerlink" href="#submit" title="Permanent link">&para;</a></h3>
+<p>Calls <code>this.validate()</code> and then the <code>onSubmit</code> function.</p>
+<h3 id="resetvalue">resetValue()<a class="headerlink" href="#resetvalue" title="Permanent link">&para;</a></h3>
+<p>Forces a reset of the value state to match the value prop, which also clears all validation errors.</p>

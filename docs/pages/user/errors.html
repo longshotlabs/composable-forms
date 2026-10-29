@@ -1,0 +1,19 @@
+<h1 id="errorsblock-component-reference">ErrorsBlock Component Reference<a class="headerlink" href="#errorsblock-component-reference" title="Permanent link">&para;</a></h1>
+<p>Renders one or more validation errors</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>To comply with this spec, an ErrorsBlock type component only needs to display at least one of the error messages passed to it. We recommend that you display all of them in some way, but you can display some subset of them (for example, only the first error) if your documentation is clear about what you display and why.</p>
+<p>React JSX example:</p>
+<pre><code class="language-jsx">&lt;ErrorsBlock names={['name', 'hours']} /&gt;
+</code></pre>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<h3 id="names">names<a class="headerlink" href="#names" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.string)
+</code></pre>
+<p>Specify one or more names (paths). Only validation errors that exactly match these names will be shown. Paths must be relative to the nearest ancestor form.</p>
+<h3 id="errors">errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.shape({
+  message: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+}))
+</code></pre>
+<p>The array of error objects. It is usually not necessary to pass these errors yourself because the closest ancestor form will do it, but you might want to pass them in when developing or testing.</p>

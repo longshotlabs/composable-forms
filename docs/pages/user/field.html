@@ -1,0 +1,41 @@
+<h1 id="field-component-reference">Field Component Reference<a class="headerlink" href="#field-component-reference" title="Permanent link">&para;</a></h1>
+<p>A block of components that are all related to a single piece of data. Typically a label, an input, help text, and an error message.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p>Use a <code>Field</code> around your inputs, errors, help text, and anything else related to that data. It will provide some kind of grouping such as borders, margin, or styling, as well as a label if you want one.</p>
+<p>React JSX example:</p>
+<pre><code class="language-jsx">&lt;Field name=&quot;name&quot; className=&quot;form-group&quot; labelClassName=&quot;control-label&quot; label=&quot;Name&quot;&gt;
+  &lt;Input name=&quot;name&quot; type=&quot;text&quot; className=&quot;form-control&quot; /&gt;
+  &lt;p className=&quot;help-block&quot;&gt;Enter your full name&lt;/p&gt;
+  &lt;ErrorsBlock names={['name']} className=&quot;help-block&quot; /&gt;
+&lt;/Field&gt;
+</code></pre>
+<h2 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h2>
+<p>ALL properties are optional. The properties listed here are governed by this specification, but components are free to add any number of additional properties as necessary.</p>
+<h3 id="name">name<a class="headerlink" href="#name" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.string
+</code></pre>
+<p>Specify a name if you want the <code>errors</code> array provided. This should be the same name as the input within the field. Some Field components might not do anything with errors and therefore don't need a name.</p>
+<h3 id="label">label<a class="headerlink" href="#label" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.string
+</code></pre>
+<p>A label string to render. Translate this before passing it in.</p>
+<h3 id="errors">errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.arrayOf(PropTypes.shape({
+  message: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+}))
+</code></pre>
+<p>Array of error objects for all inputs related to this field. It is usually not necessary to pass these errors yourself because the closest ancestor form will do it, but you might want to pass them in when developing or testing.</p>
+<h3 id="isrequired">isRequired<a class="headerlink" href="#isrequired" title="Permanent link">&para;</a></h3>
+<pre><code class="language-js">PropTypes.bool
+</code></pre>
+<p>Some implementations of <code>Field</code> will show a requiredness indicator if you pass <code>true</code> here. This is not used for validation; it is for display only.</p>
+<h3 id="additional-properties">Additional Properties<a class="headerlink" href="#additional-properties" title="Permanent link">&para;</a></h3>
+<p>These properties are not strictly governed by this specification, but in order to make it easy to swap similar components, we recommend the following naming conventions:</p>
+<ul>
+<li><code>className</code> (string): For inputs that render HTML, to be used as the <code>class</code> attribute on the outermost element.</li>
+<li><code>labelClassName</code> (string): For inputs that render HTML, to be used as the <code>class</code> attribute on the label element.</li>
+<li><code>labelStyle</code> (object): For inputs that render HTML, to be used as the <code>style</code> attribute on the label element.</li>
+<li><code>labelFor</code> (string): For inputs that render HTML, to be used as the <code>for</code> attribute on the label element.</li>
+<li><code>style</code> (object): For inputs that render HTML, to be used as the <code>style</code> attribute on the outermost element.</li>
+</ul>
